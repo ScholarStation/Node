@@ -1,2 +1,2 @@
-# Node
-Node server for API as well as website
+# ScholarStation
+This is Scholar Station 

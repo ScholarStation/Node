@@ -1,0 +1,63 @@
+//Will make sample profiles, username and password
+conn = new Mongo();
+db = conn.getDB("SS");
+var a  = {
+	"fname":"Ben",
+	"lname":"Churchill",
+	"age":21,
+	"gender":"foxspirit",
+	"email":"bjc37@students.uwf.edu",
+	"year":"senior",
+	"major":"SE",
+	"username":"qwex"
+};
+db.profiles.save(a);
+var a  = {
+	"fname":"Branden",
+	"lname":"Poe",
+	"age":22,
+	"gender":"whitehorse",
+	"email":"bmp18@students.uwf.edu",
+	"year":"senior",
+	"major":"SE",
+	"username":"pleb"
+};
+db.profiles.save(a);
+var a  = {
+	"fname":"Jonathan",
+	"lname":"Rogers",
+	"age":21,
+	"gender":"whiteman",
+	"email":"jmr76@students.uwf.edu",
+	"year":"senior",
+	"major":"SE",
+	"username":"oldage"
+};
+db.profiles.save(a);
+var a = {
+	"fname":"Jason",
+	"lname":"Monforton",
+	"age":24,
+	"gender":"whiteman",
+	"email":"jem75@students.uwf.edu",
+	"year":"senior",
+	"major":"CIS",
+	"username":"jasonea"
+};
+db.profiles.save(a);
+var a = {
+	"fname":"Michael",
+	"lname":"Caine",
+	"age":27,
+	"gender":"bigbull",
+	"email":"mjc15@students.uwf.edu",
+	"year":"something",
+	"major":"SE",
+	"username":"hamhock"
+};
+db.profiles.save(a);
+var b = {
+	"username":"qwex",
+	"password":"pass1234"
+};
+db.login.save(b);

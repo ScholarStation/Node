@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans'>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/sweetalert/dist/sweetalert.css">
 </head>
 <body>
 <div class="cont">
@@ -25,35 +26,16 @@
                     </svg>
                     <input type="password" class="login__input pass" placeholder="Password"/>
                 </div>
-                <button type="button" onclick="validateLogin()" class="login__submit" >Sign in</button>
-                <script>
-                    function validateLogin(){
-                        console.log("got into validate login...");
-                        var xhttp = new XMLHttpRequest();
-                        var json_upload;
-                        xhttp.onreadystatechange = function() { // for the response from server
-                            if (xhttp.readyState == 4 && xhttp.status == 200) {
-                                // in here check if the loginUtility returned true
-                                //document.getElementById("demo").innerHTML = xhttp.responseText;
-                                window.location ="http://70.187.52.39:3000/dashBoard"; // redirect to the dashboard
-                            }
-                        };
-                        jsnon_upload = JSON.stringify({username:"qwex", password:"pass1234"});
-                        xhttp.open("POST", "localhost:3000/LoginApp" , true);
-                        //xhttp.open("POST", "http://70.187.52.39:3000/LoginApp" , true);
-                        xhttp.setRequestHeader("Content-Type", "application/json");
-                        xhttp.send(json_upload);
-                    }
-                </script>
+                <button type="button" id="loginButton"  class="login__submit" >Sign in</button>
+
                 <p class="login__signup">Don't have an account? &nbsp;<a>Sign up</a></p>
                 </div>
         </div>
     </div>
 </div>
-
-
-
+<script src="/sweetalert/dist/sweetalert.min.js"></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
 <script src="/javascripts/index.js"></script>
 </body>
 </html>

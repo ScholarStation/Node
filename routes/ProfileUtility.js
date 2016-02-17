@@ -6,7 +6,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.send('This is the Profiles Page that the App commnicates with');
+    res.send('This is the Profiles Page that the App communicates with');
 });
 
 var MongoClient = require('mongodb').MongoClient;

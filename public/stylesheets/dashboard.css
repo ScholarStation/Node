@@ -1,0 +1,132 @@
+html, body {
+    font-size: 100%;
+    color: #EEEEEF;
+    height: 100%;
+    overflow: hidden;
+}
+
+.demo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15rem;
+    margin-top: -26.5rem;
+    width: 30rem;
+    height: 53rem;
+    overflow: hidden;
+}
+
+.app {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: none;
+    -webkit-transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.68, -0.45, 0.465, 1.25);
+    transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.68, -0.45, 0.465, 1.25);
+    transition: opacity 0.1s, transform 0.3s cubic-bezier(0.68, -0.45, 0.465, 1.25);
+    transition: opacity 0.1s, transform 0.3s cubic-bezier(0.68, -0.45, 0.465, 1.25), -webkit-transform 0.3s cubic-bezier(0.68, -0.45, 0.465, 1.25);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.cont {
+    position: relative;
+    height: 100%;
+    /*
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/slider-2.jpg");
+    background-image: url("http://freshwallpapers.in/download/stunning-2560x1600.jpg");
+    background-image: url("http://hdfreewallpaper.net/wp-content/uploads/2015/10/moon-beautiful-hd-free-wallpapers.jpg");
+    */
+    background-image: url("http://freshwallpapers.in/download/stunning-2560x1600.jpg");
+    background-size: cover;
+    overflow: auto;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+.demo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15rem;
+    margin-top: -26.5rem;
+    width: 30rem;
+    height: 53rem;
+    overflow: hidden;
+}
+
+.profile_row{
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    float: none;
+    z-index: auto;
+    width: auto;
+    height: auto;
+    position: static;
+    cursor: default;
+    opacity: 1;
+    margin: 0;
+    padding: 10px 20px;
+    overflow: visible;
+    border: 1px solid rgba(36,61,39,1);
+    border-right-width: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal 16px/normal Arial Black, Gadget, sans-serif;
+    color: rgba(40,42,81,1);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: rgba(60,96,55,1);
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+    -webkit-transition: color 200ms cubic-bezier(0, 0, 0.97, 0.41);
+    -moz-transition: color 200ms cubic-bezier(0, 0, 0.97, 0.41);
+    -o-transition: color 200ms cubic-bezier(0, 0, 0.97, 0.41);
+    transition: color 200ms cubic-bezier(0, 0, 0.97, 0.41);
+    -webkit-transform: rotateX(-0.5729577951308232deg) rotateY(-1.1459155902616462deg)   ;
+    transform: rotateX(-0.5729577951308232deg) rotateY(-1.1459155902616462deg)   ;
+    -webkit-transform-origin: 50% 50% 0;
+    transform-origin: 50% 50% 0;
+}
+
+.fancyFont{
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    float: none;
+    z-index: auto;
+    width: auto;
+    height: auto;
+   position: static;
+    cursor: default;
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: none;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    font: normal normal 400 16px/normal "Aldrich", Helvetica, sans-serif;
+    color: rgba(60,96,55,1);
+    text-align: left;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    /*text-shadow: 0 1px 0 rgb(128,141,147) , -1px 0 0 rgb(205,210,213) , -1px 2px 0 rgb(128,141,147) , -2px 1px 0 rgb(205,210,213) , -2px 3px 0 rgb(128,141,147) , -3px 2px 0 rgb(205,210,213) , -3px 4px 0 rgb(128,141,147) , -4px 3px 0 rgb(205,210,213) , -4px 5px 0 rgb(128,141,147) , -5px 4px 0 rgb(205,210,213) , -5px 6px 0 rgb(128,141,147) , -6px 5px 0 rgb(205,210,213) , -6px 7px 0 rgb(128,141,147) , -7px 6px 0 rgb(205,210,213) , -7px 8px 0 rgb(128,141,147) , -8px 7px 0 rgb(205,210,213) ;
+    */
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    -webkit-transform: none;
+    transform: none;
+    -webkit-transform-origin: 50% 50% 0;
+    transform-origin: 50% 50% 0;
+}

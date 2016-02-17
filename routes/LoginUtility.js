@@ -25,44 +25,62 @@ function makeid()
     return text;
 }
 
+router.get('/', function(req, res, next){
+    res.send('tried to use a GET with LoginUtility. Should redirect to a different page...');
+});
+
+
+/**handles POST request to LOGINAPP from browser or phone
+ *
+ */
 router.post('/', function(req,res,next){
     console.log("validating login...");
-    //asynch function for validation login
     var validateLogin = function(db, callback) {
         db.collection('login').findOne({username:req.body.username,password:req.body.password},function(err,document){
-
-            if(err)//error: something went wroing
-            res.send({validate:false});
-            if(document){//found in the login collection
-
-                db.collection('uniquekey').findOne({//object to search for
-
+            if(err) {//error: something went wroing
+                console.log("Something went wrong...");
+                res.send({validate: false});
+            }
+            if(document){//found the user by their username and password
+                console.log("I FOUND YOU...");
+                db.collection('uniquekey').findOne({//now search for them and see if they already have a key too...
                     username: req.body.username,
-
                 }, function (err, document) {
-                    if(err){
+                    if(err){ // error occured during read from DB
+                        console.log("Error during lookup...");
                         res.send({validate:false});
-
+                        return;
                     }
-                    if (document){
+                    if (document){ // found the user and thier unique key. send back valid!
+                        console.log("Found user and their key...");
                         res.send({validate:true ,username:document.username,KEY:document.KEY});
-                    }else
-                    console.log("Issuing new key" );
+                        return;
+                    }
+                    else // found user, but they don't have a key...
+                    {
+                        console.log("Issuing new key" );
+                        var KEY = makeid();
+                        var ValidatedLoginUK = {username:document.username,KEY:KEY};
+                        db.collection('uniquekey').insert(ValidatedLoginUK, {w: 1}, function(err, records){//inserts into the uniquekey collection
+                            if(err){
+                                console.log("could not validatelogin-- insert");
+                                 res.send({error:"error in uniquekey collection insert"});
+                            }else
+                                console.log("Record added ",records);
+                        });
+                        console.log("hot here 3");
+                        res.send({validate:true ,username:document.username,KEY:KEY});
+                        return;
+                    }
                 });
-                var KEY = makeid();
-                var ValidatedLoginUK = {username:document.username,KEY:KEY};
-                db.collection('uniquekey').insert(ValidatedLoginUK, {w: 1}, function(err, records){//inserts into the uniquekey collection
-                    if(err){
-                        console.log("could not validatelogin-- insert");
-                        res.send({error:"error in uniquekey collection insert"});
-                    }else
-                    console.log("Record added ",records);
-                });
-                res.send({validate:true ,username:document.username,KEY:KEY});
                }
-             else
+                else// Did not find the user. Login failed!! -send back false-
+                {
+                console.log("Not a valid user. Login failed!");
+                res.send({validate:false});
+                return;
+                }
 
-            res.send({validate:false})
         } );
     };
     // creates connection and calls validate login
@@ -70,10 +88,8 @@ router.post('/', function(req,res,next){
         assert.equal(null, err);
         validateLogin(db, function() {
             db.close();
-
         });
     });
-
 });
 
 //app.post('/', function (req,res,next){

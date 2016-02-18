@@ -17,11 +17,11 @@ router.post('/Create', function (req, res) {
 
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
-                console.log("There was an error in the Validation-- Create Study Group"+ err);
+                console.log("There was an error in the Validation-- Create Study Group", err);
                 res.send({result: false, message: err});
 
             } else if (document) {
-                console.log("found the login!: "+document);
+                console.log("found the login!: ",document);
                 var NewStudyGroup =
                 {
                     course: req.body.course,
@@ -31,16 +31,16 @@ router.post('/Create', function (req, res) {
                     time: req.body.time,
                     members: req.body.members
                 };
-                console.log("study group object (starting insert): " + NewStudyGroup);
+                console.log("study group object (starting insert): " , NewStudyGroup);
 
 
                 db.collection("study").insert(NewStudyGroup, function (err, records) {
                     //Callback for insert
                     if (err) {
-                        console.log("There was an error in the insert-- Create Study Group"+ err);
+                        console.log("There was an error in the insert-- Create Study Group", err);
                         res.send({result: false, message: err});
                     } else {
-                        console.log("Created a new study Group: " + records);
+                        console.log("Created a new study Group: " , records);
                         res.send({result: true, message: ""});
                     }
 
@@ -49,7 +49,7 @@ router.post('/Create', function (req, res) {
 
 
             } else {
-                console.log("Didnt find a login to make a Study Group! "+req.body);
+                console.log("Didnt find a login to make a Study Group! ",req.body);
                 res.send({result: false, message: "invalid Login"});
 
             }
@@ -57,4 +57,14 @@ router.post('/Create', function (req, res) {
 
     }
 
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        CreateProfile(db, function () {
+            db.close();
+
+        });
+    });
+
 });
+
+module.exports = router;

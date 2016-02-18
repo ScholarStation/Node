@@ -62,7 +62,7 @@ router.post('/', function (req, res, next) {
                     {
                         console.log("Issuing new key");
                         var KEY = makeid();
-                        var ValidatedLoginUK = {username: document.username, KEY: KEY};
+                        var ValidatedLoginUK = {username: req.body.username, KEY: KEY};
                         db.collection('uniquekey').insert(ValidatedLoginUK, {w: 1}, function (err, records) {//inserts into the uniquekey collection
                             if (err) {
                                 console.log("could not validatelogin-- insert");
@@ -71,7 +71,7 @@ router.post('/', function (req, res, next) {
                                 console.log("Record added ", records);
                         });
                         console.log("hot here 3");
-                        res.send({validate: true, username: document.username, KEY: KEY});
+                        res.send({validate: true, username: records[0].username, KEY: KEY});
                         return;
                     }
                 });

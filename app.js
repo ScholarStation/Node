@@ -13,6 +13,7 @@ var loginApp = require('./routes/LoginUtility');
 var profileApp = require('./routes/ProfileUtility');
 var dashBoard = require(('./routes/dashBoard'));
 var errorPage = require(('./routes/error'));
+var studyUtil = require(('./routes/StudyUtility'));
 
 
 
@@ -36,8 +37,10 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/LoginApp',loginApp);
 app.use('/ProfileApp',profileApp);
+app.use('/StudyUtility',studyUtil);
 app.use('/dashBoard',dashBoard);
 app.use('/error', errorPage);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

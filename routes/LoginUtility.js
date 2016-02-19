@@ -54,7 +54,7 @@ router.post('/', function (req, res, next) {
                         return;
                     }
                     if (document) { // found the user and thier unique key. send back valid!
-                        console.log("Found user and their key...");
+                        console.log("Found user and their key...",document);
                         res.send({validate: true, username: document.username, KEY: document.KEY});
                         return;
                     }

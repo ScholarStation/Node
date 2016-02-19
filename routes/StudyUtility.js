@@ -67,4 +67,54 @@ router.post('/Create', function (req, res) {
 
 });
 
+router.post('/GetStudyGroupsByMember',function(req,res){
+
+    var getProfile = function(db,callback) {
+        console.log("starting a retrival of study group",req.body);
+
+        db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
+            if (err) {
+                console.log("There was an error in the Validation-- Create Study Group", err);
+                res.send({result: false, message: err});
+
+            } else if (document) {
+                console.log("found the login!: , starting to find the study groups", document);
+
+                var studyGroups = db.collection('study').find( { $or: [ {owner :req.body.username }, { members:req.body.username  } ]});
+                console.log("Done! processing!");
+            //use this as template
+
+                //cursor.each(function(err, doc) {
+            //    assert.equal(err, null);
+            //    if (doc != null) {
+            //        console.dir(doc);
+            //    } else {
+            //        callback();
+            //    }
+            //});
+                res.send(studyGroups);
+
+            } else {
+            console.log("Didnt find a login to get studyGroups! ",req.body);
+            res.send({result: false, message: "invalid Login"});
+            }
+
+        });
+
+    }
+    console.log("made it to get groups1!");
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        getProfile(db, function () {
+            db.close();
+
+        });
+    });
+});
+
+
+
+
+
+
 module.exports = router;

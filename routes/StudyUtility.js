@@ -87,10 +87,11 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
                 cursor.each(function (err, doc) {
                     assert.equal(err, null);
                     if (doc != null) {
+                        //create an aray of all of the study groups
                         console.log("found a study group!: ", doc);
                         studyGroups.push(doc);
                     } else {
-
+                        // send
                         res.send({studyGroups: studyGroups});
                     }
                 });
@@ -113,6 +114,28 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
         });
     });
 });
+
+router.post('/DeleteByID',function(req,res){
+
+   var deleteItem= function(db,callback){
+       db.collection('study').deleteOne({_id:req.body._id},function(err, results){
+           res.send({err:err,result:results});
+       });
+   };
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        deleteItem(db, function () {
+            db.close();
+
+        });
+    });
+
+
+});
+
+
+
 
 
 module.exports = router;

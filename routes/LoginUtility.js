@@ -71,7 +71,7 @@ router.post('/', function (req, res, next) {
                                 console.log("Record added ", records);
                         });
                         console.log("hot here 3");
-                        res.send({validate: true, username: records[0].username, KEY: KEY});
+                        res.send({validate: true, username: req.body.username, KEY: KEY});
                         return;
                     }
                 });

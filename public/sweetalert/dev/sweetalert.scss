@@ -2,7 +2,6 @@
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
 
-
 body.stop-scrolling {
   height: 100%;
   overflow: hidden;
@@ -10,7 +9,7 @@ body.stop-scrolling {
 
 .sweet-overlay {
   background-color: rgb(0, 0, 0); /* IE8 */
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; /* IE8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; /* IE8 */
   background-color: rgba(black, 0.4);
 
   position: fixed;
@@ -285,10 +284,10 @@ body.stop-scrolling {
   }
 
   .sa-icon {
-    $red:     #F27474;
-    $orange:  #F8BB86;
-    $blue:    #C9DAE1;
-    $green:   #A5DC86;
+    $red: #F27474;
+    $orange: #F8BB86;
+    $blue: #C9DAE1;
+    $green: #A5DC86;
 
     width: 80px;
     height: 80px;
@@ -402,7 +401,7 @@ body.stop-scrolling {
         top: -7px;
         left: -33px;
 
-         -webkit-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
         transform: rotate(-45deg);
         -webkit-transform-origin: 60px 60px;
         transform-origin: 60px 60px;
@@ -500,41 +499,78 @@ body.stop-scrolling {
     @content;
   }
 }
+
 @mixin animation($str) {
   -webkit-animation: #{$str};
   animation: #{$str};
 }
 
-
 // Modal animation
 
 @include keyframes(showSweetAlert) {
-  0%    { transform: scale(0.7);  -webkit-transform: scale(0.7);  }
-  45%   { transform: scale(1.05); -webkit-transform: scale(1.05); }
-  80%   { transform: scale(0.95); -webkit-transform: scale(0.95);   }
-  100%  { transform: scale(1);    -webkit-transform: scale(1);    }
+  0% {
+    transform: scale(0.7);
+    -webkit-transform: scale(0.7);
+  }
+  45% {
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
 }
+
 @include keyframes(hideSweetAlert) {
-  0%    { transform: scale(1);    -webkit-transform: scale(1);    }
-  100%  { transform: scale(0.5);  -webkit-transform: scale(0.5);  }
+  0% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+  100% {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  }
 }
 
 @include keyframes(slideFromTop) {
-  0%    { top: 0%;  }
-  100%  { top: 50%; }
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 50%;
+  }
 }
+
 @include keyframes(slideToTop) {
-  0%    { top: 50%; }
-  100%  { top: 0%;  }
+  0% {
+    top: 50%;
+  }
+  100% {
+    top: 0%;
+  }
 }
 
 @include keyframes(slideFromBottom) {
-  0%    { top: 70%; }
-  100%  { top: 50%;  }
+  0% {
+    top: 70%;
+  }
+  100% {
+    top: 50%;
+  }
 }
+
 @include keyframes(slideToBottom) {
-  0%    { top: 50%;  }
-  100%  { top: 70%; }
+  0% {
+    top: 50%;
+  }
+  100% {
+    top: 70%;
+  }
 }
 
 .showSweetAlert {
@@ -567,72 +603,161 @@ body.stop-scrolling {
   }
 }
 
-
-
 // Success icon animation
 
 @include keyframes(animateSuccessTip) {
-  0%    { width: 0;     left: 1px;    top: 19px; }
-  54%   { width: 0;     left: 1px;    top: 19px; }
-  70%   { width: 50px;  left: -8px;   top: 37px; }
-  84%   { width: 17px;  left: 21px;   top: 48px; }
-  100%  { width: 25px;  left: 14px;   top: 45px; }
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px;
+  }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px;
+  }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px;
+  }
 }
+
 @include keyframes(animateSuccessLong) {
-  0%    { width: 0;     right: 46px;  top: 54px; }
-  65%   { width: 0;     right: 46px;  top: 54px; }
-  84%   { width: 55px;  right: 0px;   top: 35px; }
-  100%  { width: 47px;  right: 8px;   top: 38px; }
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px;
+  }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+  }
 }
+
 @include keyframes(rotatePlaceholder) {
-  0%    { transform: rotate(-45deg);  -webkit-transform: rotate(-45deg);  }
-  5%    { transform: rotate(-45deg);  -webkit-transform: rotate(-45deg);    }
-  12%   { transform: rotate(-405deg); -webkit-transform: rotate(-405deg); }
-  100%  { transform: rotate(-405deg); -webkit-transform: rotate(-405deg); }
+  0% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  5% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  12% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg);
+  }
+  100% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg);
+  }
 }
 
 .animateSuccessTip {
   @include animation('animateSuccessTip 0.75s');
 }
+
 .animateSuccessLong {
   @include animation('animateSuccessLong 0.75s');
 }
+
 .sa-icon.sa-success.animate::after {
   @include animation('rotatePlaceholder 4.25s ease-in');
 }
 
-
 // Error icon animation
 
 @include keyframes(animateErrorIcon) {
-  0%    { transform: rotateX(100deg); -webkit-transform: rotateX(100deg); opacity: 0; }
-  100%  { transform: rotateX(0deg);   -webkit-transform: rotateX(0deg);   opacity: 1; }
+  0% {
+    transform: rotateX(100deg);
+    -webkit-transform: rotateX(100deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    opacity: 1;
+  }
 }
+
 .animateErrorIcon {
   @include animation('animateErrorIcon 0.5s');
 }
+
 @include keyframes(animateXMark) {
-  0%    { transform: scale(0.4);  -webkit-transform: scale(0.4);  margin-top: 26px; opacity: 0; }
-  50%   { transform: scale(0.4);  -webkit-transform: scale(0.4);  margin-top: 26px; opacity: 0; }
-  80%   { transform: scale(1.15); -webkit-transform: scale(1.15); margin-top: -6px;             }
-  100%  { transform: scale(1);    -webkit-transform: scale(1);    margin-top: 0;    opacity: 1; }
+  0% {
+    transform: scale(0.4);
+    -webkit-transform: scale(0.4);
+    margin-top: 26px;
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.4);
+    -webkit-transform: scale(0.4);
+    margin-top: 26px;
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+    margin-top: -6px;
+  }
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    margin-top: 0;
+    opacity: 1;
+  }
 }
+
 .animateXMark {
   @include animation('animateXMark 0.5s');
 }
 
 @include keyframes(pulseWarning) {
-  0%    { border-color: #F8D486; }
-  100%  { border-color: #F8BB86; }
+  0% {
+    border-color: #F8D486;
+  }
+  100% {
+    border-color: #F8BB86;
+  }
 }
+
 .pulseWarning {
   @include animation('pulseWarning 0.75s infinite alternate');
 }
 
 @include keyframes(pulseWarningIns) {
-  0%    { background-color: #F8D486; }
-  100%  { background-color: #F8BB86; }
+  0% {
+    background-color: #F8D486;
+  }
+  100% {
+    background-color: #F8BB86;
+  }
 }
+
 .pulseWarningIns {
   @include animation('pulseWarningIns 0.75s infinite alternate');
 }

@@ -6,13 +6,9 @@
  */
 
 
-
-
-
-
 /**Another function for providing cool little animations for the login page
  */
-$(document).ready(function() {
+$(document).ready(function () {
 
     var animating = false,
         submitPhase1 = 1100,
@@ -34,21 +30,21 @@ $(document).ready(function() {
 
     /** This provides the fancy spinning wheel at the bottom after pressing sign up
      */
-    $(document).on("click", ".login__submit", function(e) {
+    $(document).on("click", ".login__submit", function (e) {
         //console.log(" animating...");
         if (animating) return;
         animating = true;
         var that = this;
         ripple($(that), e);
         $(that).addClass("processing");
-        setTimeout(function() {
+        setTimeout(function () {
             $(that).addClass("success");
-            setTimeout(function() {
+            setTimeout(function () {
                 $app.show();
                 $app.css("top");
                 $app.addClass("active");
             }, submitPhase2 - 70);
-            setTimeout(function() {
+            setTimeout(function () {
                 $login.hide();
                 $login.addClass("inactive");
                 animating = false;
@@ -62,19 +58,19 @@ $(document).ready(function() {
     /** This isn't being used
      * - provides nice affects for logging out.
      */
-    $(document).on("click", ".app__logout", function(e) {
+    $(document).on("click", ".app__logout", function (e) {
         if (animating) return;
         $(".ripple").remove();
         animating = true;
         var that = this;
         $(that).addClass("clicked");
-        setTimeout(function() {
+        setTimeout(function () {
             $app.removeClass("active");
             $login.show();
             $login.css("top");
             $login.removeClass("inactive");
         }, logoutPhase1 - 120);
-        setTimeout(function() {
+        setTimeout(function () {
             $app.hide();
             animating = false;
             $(that).removeClass("clicked");
@@ -83,40 +79,49 @@ $(document).ready(function() {
 });
 
 
-
 /** This function fires when the user clicks submit.
  *  - This function will send a POST request to the servers script that verifies a user and allowes them to login.
  *  - Checks if the user was valid or not.
  *  - Alerts the user to an incorrect user.
  *
  */
-$(document).on("click", ".login__submit", function(e) {
-            // read the passwords from the web page....
-            //login__input pass
-            //login__input name
-            var url = "http://localhost:3000/LoginApp"; // where the post is made to. will need to be changed to antilizard.com:3000 when moved to server
-            var username;
-            var password;
-            var userData;
+$(document).on("click", ".login__submit", function (e) {
+    // read the passwords from the web page....
+    //login__input pass
+    //login__input name
+    var url = "http://localhost:3000/LoginApp"; // where the post is made to. will need to be changed to antilizard.com:3000 when moved to server
+    var username;
+    var password;
+    var userData;
 
-            $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType: 'json',
-                    data: {username: 'qweyx', password: 'pass1234'},
-                    success: function(result) {
-                        if(result.validate == true){
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        data: {username: 'qweyx', password: 'pass1234'},
+        success: function (result) {
+            if (result.validate == true) {
 
-                        }
-                        else{ // login utility could not validate user
-                            swal({   title: "Login Failed!",   text: "Incorrect username or password!",   type: "error",   confirmButtonText: "Cool" });
-                            location.reload();
-                        }
-                        //alert(result.validate);
-                    },
-                    failure: function(){
-                        swal({   title: "Error",   text: "Could not get response from server",   type: "error",   confirmButtonText: "Cool" });
-                        alert("POST REQUEST FAILED.  browser -> server.");
-                    }
-                    });
+            }
+            else { // login utility could not validate user
+                swal({
+                    title: "Login Failed!",
+                    text: "Incorrect username or password!",
+                    type: "error",
+                    confirmButtonText: "Cool"
+                });
+                location.reload();
+            }
+            //alert(result.validate);
+        },
+        failure: function () {
+            swal({
+                title: "Error",
+                text: "Could not get response from server",
+                type: "error",
+                confirmButtonText: "Cool"
+            });
+            alert("POST REQUEST FAILED.  browser -> server.");
+        }
+    });
 });

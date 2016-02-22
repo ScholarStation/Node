@@ -1,20 +1,21 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300); // Open Sans font
-@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700);   // Condensed
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300);
+// Open Sans font
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700); // Condensed
 
 @mixin retina-background($url, $type:png) {
   background-image: url("#{$url}.#{$type}");
   background-image: -webkit-image-set(url("#{$url}.#{$type}") 1x,
-                            url("#{$url}@2x.#{$type}") 2x);
+    url("#{$url}@2x.#{$type}") 2x);
 }
 
 body {
-	background-color: #f2f4f6;
+  background-color: #f2f4f6;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
 }
 
 h1 {
-  @include retina-background("images/logo_big"); 
+  @include retina-background("images/logo_big");
   width: 385px;
   height: 81px;
   text-indent: -9999px;
@@ -30,6 +31,7 @@ h1 {
     width: 250px;
   }
 }
+
 h2 {
   font-size: 20px;
   color: #A9B2BC;
@@ -39,6 +41,7 @@ h2 {
   text-align: center;
   display: block;
 }
+
 h3 {
   font-size: 28px;
   color: #C7CCD1;
@@ -221,7 +224,7 @@ pre {
     height: 25px;
     margin-top: -3px;
     text-indent: -9999px;
-    @include retina-background("images/logo_small"); 
+    @include retina-background("images/logo_small");
   }
   h5 {
     margin-bottom: -7px;
@@ -254,7 +257,6 @@ pre {
     }
   }
 }
-
 
 ul.examples {
   list-style-type: none;
@@ -308,7 +310,6 @@ ul.examples {
   }
 }
 
-
 ol {
   max-width: 700px;
   margin: 70px auto;
@@ -324,7 +325,6 @@ ol {
   }
 }
 
-
 table {
   width: 700px;
   font-size: 14px;
@@ -333,7 +333,7 @@ table {
   text-align: left;
   border-collapse: collapse;
   @media all and (max-width: 750px) {
-    width: auto; 
+    width: auto;
     margin: 10px 20px;
   }
 
@@ -359,8 +359,8 @@ table {
     }
     @media all and (max-width: 750px) {
       &:nth-child(2) {
-       display: none;
-     }
+        display: none;
+      }
     }
   }
 
@@ -375,8 +375,8 @@ table {
     }
     @media all and (max-width: 750px) {
       &:nth-child(2) {
-       display: none;
-     }
+        display: none;
+      }
     }
     @media all and (max-width: 360px) {
       padding: 10px 4px;
@@ -414,7 +414,6 @@ footer {
   }
 }
 
-
 // Theme example (Twitter)
 // Twitter Theme for SweetAlert
 // By Tristan Edwards
@@ -432,8 +431,8 @@ footer {
   border-radius: 6px;
   box-shadow: 0px 0px 0px 1px rgba(black, 0.11), 0px 6px 30px rgba(black, 0.14);
 
-  ~ .sweet-overlay {  
-    background: rgba(41,47,51,0.9);
+  ~ .sweet-overlay {
+    background: rgba(41, 47, 51, 0.9);
   }
 
   h2 {
@@ -442,7 +441,7 @@ footer {
     left: 0;
     right: 0;
     height: $header-height;
-    line-height: $header-height; 
+    line-height: $header-height;
     font-size: 16px;
     font-weight: 400;
     color: #8899a6;
@@ -500,14 +499,14 @@ footer {
 
     &.confirm {
       background-color: #55acee !important;
-      background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
+      background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
       -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000000, endColorstr=#0C000000)";
       border: 1px solid #3b88c3;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
       margin-right: $padding;
       &:hover {
         background-color: #55acee;
-        background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.15));
+        background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
         -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000000, endColorstr=#26000000)";
         border-color: #3b88c3;
       }
@@ -515,13 +514,13 @@ footer {
     &.cancel {
       color: #66757e;
       background-color: #f5f8fa;
-      background-image: linear-gradient(#fff,#f5f8fa);
+      background-image: linear-gradient(#fff, #f5f8fa);
       text-shadow: 0px -1px 0px white;
       margin-right: 9px;
       border: 1px solid #e1e8ed;
       &:hover, &:focus:hover {
         background-color: #e1e8ed;
-        background-image: linear-gradient(#fff,#e1e8ed);
+        background-image: linear-gradient(#fff, #e1e8ed);
         -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled=false)";
         border-color: #e1e8ed;
       }

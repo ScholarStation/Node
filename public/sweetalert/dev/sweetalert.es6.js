@@ -65,7 +65,7 @@ var lastFocusedButton;
  */
 var sweetAlert, swal;
 
-export default sweetAlert = swal = function() {
+export default sweetAlert = swal = function () {
   var customizations = arguments[0];
 
   addClass(document.body, 'stop-scrolling');
@@ -78,7 +78,7 @@ export default sweetAlert = swal = function() {
    */
   function argumentOrDefault(key) {
     var args = customizations;
-    return (args[key] === undefined) ?  defaultParams[key] : args[key];
+    return (args[key] === undefined) ? defaultParams[key] : args[key];
   }
 
   if (customizations === undefined) {
@@ -93,8 +93,8 @@ export default sweetAlert = swal = function() {
     // Ex: swal("Hello", "Just testing", "info");
     case 'string':
       params.title = customizations;
-      params.text  = arguments[1] || '';
-      params.type  = arguments[2] || '';
+      params.text = arguments[1] || '';
+      params.type = arguments[2] || '';
       break;
 
     // Ex: swal({ title:"Hello", text: "Just testing", type: "info" });
@@ -138,7 +138,9 @@ export default sweetAlert = swal = function() {
    */
   var $buttons = modal.querySelectorAll('button');
   var buttonEvents = ['onclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onfocus'];
-  var onButtonEvent = (e) => handleButton(e, params, modal);
+  var onButtonEvent = (e) =
+  >
+  handleButton(e, params, modal);
 
   for (let btnIndex = 0; btnIndex < $buttons.length; btnIndex++) {
     for (let evtIndex = 0; evtIndex < buttonEvents.length; evtIndex++) {
@@ -152,7 +154,9 @@ export default sweetAlert = swal = function() {
 
   previousWindowKeyDown = window.onkeydown;
 
-  var onKeyEvent = (e) => handleKeyDown(e, params, modal);
+  var onKeyEvent = (e) =
+  >
+  handleKeyDown(e, params, modal);
   window.onkeydown = onKeyEvent;
 
   window.onfocus = function () {
@@ -166,18 +170,17 @@ export default sweetAlert = swal = function() {
       }
     }, 0);
   };
-  
+
   // Show alert with enabled buttons always
   swal.enableButtons();
 };
-
 
 
 /*
  * Set default params for each popup
  * @param {Object} userParams
  */
-sweetAlert.setDefaults = swal.setDefaults = function(userParams) {
+sweetAlert.setDefaults = swal.setDefaults = function (userParams) {
   if (!userParams) {
     throw new Error('userParams is required');
   }
@@ -192,7 +195,7 @@ sweetAlert.setDefaults = swal.setDefaults = function(userParams) {
 /*
  * Animation when closing modal
  */
-sweetAlert.close = swal.close = function() {
+sweetAlert.close = swal.close = function () {
   var modal = getModal();
 
   fadeOut(getOverlay(), 5);
@@ -219,7 +222,7 @@ sweetAlert.close = swal.close = function() {
   removeClass($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
 
   // Reset custom class (delay so that UI changes aren't visible)
-  setTimeout(function() {
+  setTimeout(function () {
     var customClass = modal.getAttribute('data-custom-class');
     removeClass(modal, customClass);
   }, 300);
@@ -243,7 +246,7 @@ sweetAlert.close = swal.close = function() {
  * Validation of the input field is done by user
  * If something is wrong => call showInputError with errorMessage
  */
-sweetAlert.showInputError = swal.showInputError = function(errorMessage) {
+sweetAlert.showInputError = swal.showInputError = function (errorMessage) {
   var modal = getModal();
 
   var $errorIcon = modal.querySelector('.sa-input-error');
@@ -254,7 +257,7 @@ sweetAlert.showInputError = swal.showInputError = function(errorMessage) {
 
   $errorContainer.querySelector('p').innerHTML = errorMessage;
 
-  setTimeout(function() {
+  setTimeout(function () {
     sweetAlert.enableButtons();
   }, 1);
 
@@ -265,7 +268,7 @@ sweetAlert.showInputError = swal.showInputError = function(errorMessage) {
 /*
  * Reset input error DOM elements
  */
-sweetAlert.resetInputError = swal.resetInputError = function(event) {
+sweetAlert.resetInputError = swal.resetInputError = function (event) {
   // If press enter => ignore
   if (event && event.keyCode === 13) {
     return false;
@@ -283,7 +286,7 @@ sweetAlert.resetInputError = swal.resetInputError = function(event) {
 /*
  * Disable confirm and cancel buttons
  */
-sweetAlert.disableButtons = swal.disableButtons = function(event) {
+sweetAlert.disableButtons = swal.disableButtons = function (event) {
   var modal = getModal();
   var $confirmButton = modal.querySelector('button.confirm');
   var $cancelButton = modal.querySelector('button.cancel');
@@ -294,7 +297,7 @@ sweetAlert.disableButtons = swal.disableButtons = function(event) {
 /*
  * Enable confirm and cancel buttons
  */
-sweetAlert.enableButtons = swal.enableButtons = function(event) {
+sweetAlert.enableButtons = swal.enableButtons = function (event) {
   var modal = getModal();
   var $confirmButton = modal.querySelector('button.confirm');
   var $cancelButton = modal.querySelector('button.cancel');

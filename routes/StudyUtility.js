@@ -115,27 +115,40 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
     });
 });
 
-router.post('/DeleteByID',function(req,res){
+router.post('/DeleteByID', function (req, res) {
 
-   var deleteItem= function(db,callback){
-       db.collection('study').deleteOne({_id:req.body._id},function(err, results){
-           res.send({err:err,result:results});
-       });
-   };
+    var deleteItem = function (db, callback) {
 
-    MongoClient.connect(url, function (err, db) {
-        assert.equal(null, err);
-        deleteItem(db, function () {
-            db.close();
+            db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
+                if (err) {
+                    console.log("There was an error in the Validation-- Create Study Group", err);
+                    res.send({result: false, message: err});
 
+                } else if (document) {
+                    console.log("found the login!: , deleting ");
+                    db.collection('study').deleteOne({owner:req.body.username,_id: ObjectId(req.body._id)}, function (err, results) {
+                        res.send({err: err, result: results});
+                    });
+                } else {
+                    res.send({message: "NO LOGIN"});
+                }
+            });
+        };
+
+//only do it if a valid key (24 char)
+    if (req.body._id.length == 24) {
+        MongoClient.connect(url, function (err, db) {
+            assert.equal(null, err);
+            deleteItem(db, function () {
+                db.close();
+
+            });
         });
-    });
-
+    } else {
+        res.send({message: "Invalid _id" });
+    }
 
 });
-
-
-
 
 
 module.exports = router;

@@ -80,19 +80,21 @@ router.post('/GetStudyGroupsByMember',function(req,res){
             } else if (document) {
                 console.log("found the login!: , starting to find the study groups", document);
 
-                var studyGroups = db.collection('study').find( { $or: [ {owner :req.body.username }, { members:req.body.username  } ]});
+                var cursor = db.collection('study').find( { $or: [ {owner :req.body.username }, { members:req.body.username  } ]});
                 console.log("Done! processing!");
             //use this as template
+                var studyGroups=[];
+                cursor.each(function(err, doc) {
+               assert.equal(err, null);
+                if (doc != null) {
+                   console.log("found a study group!: " ,doc);
+                    studyGroups.push(doc);
+                }else {
 
-                //cursor.each(function(err, doc) {
-            //    assert.equal(err, null);
-            //    if (doc != null) {
-            //        console.dir(doc);
-            //    } else {
-            //        callback();
-            //    }
-            //});
-                res.send(studyGroups);
+                    res.send({studyGroups :studyGroups});}
+                });
+
+
 
             } else {
             console.log("Didnt find a login to get studyGroups! ",req.body);

@@ -2,11 +2,11 @@ import { stopEventPropagation, fireClick } from './handle-dom';
 import { setFocusStyle } from './handle-swal-dom';
 
 
-var handleKeyDown = function(event, params, modal) {
+var handleKeyDown = function (event, params, modal) {
   var e = event || window.event;
   var keyCode = e.keyCode || e.which;
 
-  var $okButton     = modal.querySelector('button.confirm');
+  var $okButton = modal.querySelector('button.confirm');
   var $cancelButton = modal.querySelector('button.cancel');
   var $modalButtons = modal.querySelectorAll('button[tabindex]');
 

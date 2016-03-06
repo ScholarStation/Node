@@ -1,23 +1,23 @@
 var gulp = require('gulp');
 
-var glob       = require('glob');
-var path       = require('path');
-var jshint     = require('gulp-jshint');
-var sass       = require('gulp-sass');
-var concat     = require('gulp-concat');
-var uglify     = require('gulp-uglify');
-var rename     = require('gulp-rename');
-var minifyCSS  = require('gulp-minify-css');
-var babelify   = require('babelify');
+var glob = require('glob');
+var path = require('path');
+var jshint = require('gulp-jshint');
+var sass = require('gulp-sass');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var minifyCSS = require('gulp-minify-css');
+var babelify = require('babelify');
 var browserify = require('browserify');
-var source     = require('vinyl-source-stream');
-var buffer     = require('vinyl-buffer');
-var wrap       = require('gulp-wrap');
-var qunit      = require('gulp-qunit');
-var babel      = require('gulp-babel');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var wrap = require('gulp-wrap');
+var qunit = require('gulp-qunit');
+var babel = require('gulp-babel');
 
 // Lint Task
-gulp.task('lint', function() {
+gulp.task('lint', function () {
   gulp.src('dev/sweetalert.es6.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
@@ -28,7 +28,7 @@ gulp.task('lint', function() {
 });
 
 // Compile Our Sass
-gulp.task('sass', function() {
+gulp.task('sass', function () {
 
   gulp.src('example/example.scss')
     .pipe(sass())
@@ -44,12 +44,12 @@ gulp.task('sass', function() {
 
 
 // Compile theme CSS
-var themes = glob.sync('themes/*').map(function(themeDir) {
+var themes = glob.sync('themes/*').map(function (themeDir) {
   return path.basename(themeDir);
 });
 
-themes.forEach(function(name) {
-  gulp.task(name + '-theme', function() {
+themes.forEach(function (name) {
+  gulp.task(name + '-theme', function () {
     return gulp.src('themes/' + name + '/' + name + '.scss')
       .pipe(sass()) // etc
       .pipe(rename(name + '.css'))
@@ -57,10 +57,12 @@ themes.forEach(function(name) {
   });
 });
 
-gulp.task('themes', themes.map(function(name){ return name + '-theme'; }));
+gulp.task('themes', themes.map(function (name) {
+  return name + '-theme';
+}));
 
 // Compile ES5 CommonJS entry point
-gulp.task('commonjs', function() {
+gulp.task('commonjs', function () {
   gulp.src('./dev/sweetalert.es6.js')
     .pipe(babel())
     .pipe(rename('sweetalert.js'))
@@ -71,11 +73,11 @@ gulp.task('commonjs', function() {
 });
 
 // Concatenate & Minify JS
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
   return browserify({
-      entries: './dev/sweetalert.es6.js',
-      debug: true
-    })
+    entries: './dev/sweetalert.es6.js',
+    debug: true
+  })
     .transform(babelify)
     .bundle()
     .pipe(source('sweetalert-dev.js'))
@@ -90,7 +92,7 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('dist')); // User version
 });
 
-gulp.task('test', function() {
+gulp.task('test', function () {
   return gulp.src('./test/index.html')
     .pipe(qunit({
       timeout: 20
@@ -98,7 +100,7 @@ gulp.task('test', function() {
 });
 
 // Watch Files For Changes
-gulp.task('watch', function() {
+gulp.task('watch', function () {
   gulp.watch(['dev/*.js', 'dev/*/*.js'], ['lint', 'scripts']);
   gulp.watch(['dev/*.scss', 'dev/*.css'], ['sass']);
   gulp.watch('themes/*/*.scss', ['themes']);

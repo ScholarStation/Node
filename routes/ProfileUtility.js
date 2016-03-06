@@ -44,7 +44,7 @@ router.post('/', function (req, res, next) {
 
             }
             else // invalid UK or user
-                res.send({fuck: "you"});
+                res.send({message: "invalid UK or user"});
 
 
         })

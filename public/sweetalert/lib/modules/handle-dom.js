@@ -73,7 +73,7 @@ var getTopMargin = function getTopMargin(elem) {
   elem.style.display = 'block';
 
   var height = elem.clientHeight,
-      padding;
+    padding;
   if (typeof getComputedStyle !== 'undefined') {
     // IE 8
     padding = parseInt(getComputedStyle(elem).getPropertyValue('padding-top'), 10);

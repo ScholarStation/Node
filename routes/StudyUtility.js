@@ -152,7 +152,7 @@ router.post('/DeleteByID', function (req, res) {
 
 router.post('/EditByID',function(req,res){
 
-    var editByID = function(err,db){
+    var editByID = function(db, callback){
       //check login
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {

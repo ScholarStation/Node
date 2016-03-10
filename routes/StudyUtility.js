@@ -172,7 +172,7 @@ router.post('/EditByID',function(req,res){
                     members: req.body.members
                 };
 
-                db.collection('study').update({_id:req.body._id},UpdateStudyGroup,function(err,record){
+                db.collection('study').update({_id: ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
                     if(err){
                         console.log("Error in the update ");
                         res.send({result:false, message : err})

@@ -5,9 +5,9 @@
 var express = require('express');
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongo').MongoClient;
 var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
+var ObjectId = require('mongo').ObjectID;
 var url = 'mongodb://localhost/SS';
 
 router.post('/Create', function (req, res) {

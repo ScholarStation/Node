@@ -9,9 +9,9 @@ router.get('/', function (req, res, next) {
     res.send('This is the Profiles Page that the App communicates with');
 });
 
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongo').MongoClient;
 var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
+var ObjectId = require('mongo').ObjectID;
 var url = 'mongodb://localhost/SS';
 
 

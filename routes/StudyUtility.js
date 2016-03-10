@@ -198,59 +198,13 @@ router.post('/EditByID',function(req,res){
     };
 
 
-    //only do it if a valid key (24 char)
-    if (req.body._id.length == 24) {
-        MongoClient.connect(url, function (err, db) {
-            assert.equal(null, err);
-            db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
-                if (err) {
-                    console.log("There was an error in the Validation-- EDIT Study Group", err);
-                    res.send({result: false, message: err});
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        editByID(db, function () {
+            db.close();
 
-                } else if (document) {
-                    console.log("found the login!: , updating ");
-                    //update the document
-                    var UpdateStudyGroup =
-                    {
-                        course: req.body.course,
-                        owner: req.body.owner,
-                        topic: req.body.topic,
-                        date: req.body.date,
-                        time: req.body.time,
-                        members: req.body.members
-                    };
-
-                    db.collection('study').update({_id:req.body._id},UpdateStudyGroup,function(err,record){
-                        if(err){
-                            console.log("Error in the update ");
-                            res.send({result:false, message : err})
-
-                        }else if(record){
-                            console.log("edited the record!: ",record);
-                            res.send({result:true,message:""});
-
-                        } else{
-                            console.log("n record with id found: ",req.body._id);
-                            res.send({result:false, message: "record not found"});
-
-                        }
-
-
-                    });
-
-
-                } else {
-                    res.send({message: "NO LOGIN"});
-                }
-            });
-            editByID(db, function () {
-                db.close();
-
-            });
         });
-    } else {
-        res.send({message: "Invalid _id" });
-    }
+    });
 });
 
 

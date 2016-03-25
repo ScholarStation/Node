@@ -41,28 +41,29 @@ router.post('/', function (req, res, next) {
         }, function (err, document) {
             if (err) {//error: something went wroing
                 console.log("Something went wrong...");
-                res.send({validate: false});
+                res.send({success: false,error:"Something went wrong..."});
             }
             if (document) {//found the user by their username and password
-                console.log("I FOUND YOU...");
+                console.log("Found Login... Checking for UK");
+                var permissionLevel = document.permissionLevel;
                 db.collection('uniquekey').findOne({//now search for them and see if they already have a key too...
-                    username: req.body.username,
+                    username: req.body.username
                 }, function (err, document) {
-                    if (err) { // error occured during read from DB
+                    if (err) { // error occurred during read from DB
                         console.log("Error during lookup...");
-                        res.send({validate: false});
+                        res.send({success: false,error:"Error during lookup..."});
                         return;
                     }
-                    if (document) { // found the user and thier unique key. send back valid!
+                    if (document) { // found the user and their unique key. send back valid!
                         console.log("Found user and their key...", document);
-                        res.send({validate: true, username: document.username, KEY: document.KEY});
-                        return;
+                        res.send({success: true, username: document.username, KEY: document.KEY});
+
                     }
                     else // found user, but they don't have a key...
                     {
                         console.log("Issuing new key");
                         var KEY = makeid();
-                        var ValidatedLoginUK = {username: req.body.username, KEY: KEY};
+                        var ValidatedLoginUK = {username: req.body.username, KEY: KEY,permissionLevel: permissionLevel};
                         db.collection('uniquekey').insert(ValidatedLoginUK, {w: 1}, function (err, records) {//inserts into the uniquekey collection
                             if (err) {
                                 console.log("could not validatelogin-- insert");
@@ -70,17 +71,17 @@ router.post('/', function (req, res, next) {
                             } else
                                 console.log("Record added ", records);
                         });
-                        console.log("hot here 3");
-                        res.send({validate: true, username: req.body.username, KEY: KEY});
-                        return;
+                        console.log("sending reponse");
+                        res.send({success: true, username: req.body.username, KEY: KEY});
+
                     }
                 });
             }
             else// Did not find the user. Login failed!! -send back false-
             {
                 console.log("Not a valid user. Login failed!");
-                res.send({validate: false});
-                return;
+                res.send({validate: false, message:"Not a valid user. Login failed!"});
+
             }
 
         });

@@ -122,15 +122,29 @@ router.post('/DeleteByID', function (req, res) {
             db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
                 if (err) {
                     console.log("There was an error in the Validation-- Create Study Group", err);
-                    res.send({result: false, message: err});
+                    res.send({success: false, error: err});
 
                 } else if (document) {
                     console.log("found the login!: , deleting ");
-                    db.collection('study').deleteOne({owner:req.body.username,_id: ObjectId(req.body._id)}, function (err, results) {
-                        res.send({err: err, result: results});
+                    db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
+
+                        if(err){
+                            console.log("there was a DB error")
+                            res.send({success: false, error: err});
+                        }else if (document){
+                            // TODO delete if is owner or ADMIN else exit with success false
+                        }
+
+
+
+
+
+
+
+                        res.send({success: true,error: err, message: results});
                     });
                 } else {
-                    res.send({message: "NO LOGIN"});
+                    res.send({success:false,message: "NO LOGIN"});
                 }
             });
         };
@@ -145,7 +159,7 @@ router.post('/DeleteByID', function (req, res) {
             });
         });
     } else {
-        res.send({message: "Invalid _id" });
+        res.send({success: false,message: "Invalid _id" });
     }
 
 });

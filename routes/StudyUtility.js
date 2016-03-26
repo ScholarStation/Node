@@ -126,23 +126,38 @@ router.post('/DeleteByID', function (req, res) {
 
                 } else if (document) {
                     console.log("found the login!: , deleting ");
+                    if(isAdmin(document)){
+                        //TODO delete based on ID
+                    }else{
                     db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
 
-                        if(err){
-                            console.log("there was a DB error")
+                        if (err) {
+                            console.log("there was a DB error");
                             res.send({success: false, error: err});
-                        }else if (document){
-                            // TODO delete if is owner or ADMIN else exit with success false
+                        } else if (document) {
+                            db.collection('study').deleteOne(document,function(err,results){
+
+                                if(err){
+                                    //TODO send err messafe
+                                }else if(results){
+
+
+                                    //TODo send success
+                                }else{
+                                    //TODO send did not find message
+                                }
+
+                            });
+                        }else{
+                            console.log("didnt find study groups");
+
                         }
 
 
 
 
-
-
-
                         res.send({success: true,error: err, message: results});
-                    });
+                    });}
                 } else {
                     res.send({success:false,message: "NO LOGIN"});
                 }
@@ -186,7 +201,7 @@ router.post('/EditByID',function(req,res){
                     members: req.body.members
                 };
 
-                db.collection('study').update({_id:req.body._id},UpdateStudyGroup,function(err,record){
+                db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
                     if(err){
                         console.log("Error in the update ");
                         res.send({result:false, message : err})
@@ -220,6 +235,8 @@ router.post('/EditByID',function(req,res){
         });
     });
 });
-
+function isAdmin(document){
+    return document.permissionLevel=="ADMIN"
+}
 
 module.exports = router;

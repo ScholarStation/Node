@@ -127,35 +127,46 @@ router.post('/DeleteByID', function (req, res) {
                 } else if (document) {
                     console.log("found the login!: , deleting ");
                     if(isAdmin(document)){
-                        //TODO delete based on ID
+                        //delete based on ID
+                        db.collection('study').deleteOne({_id: ObjectId(req.body._id)},function(err,results){
+                            if(err){
+                                //send error message
+                                console.log("there was a DB error");
+                                res.send({success: false, error: err});
+                            }else if(results){
+                                console.log("deleted: ",results);
+                                res.send({success:true,message:results});
+                                //send success
+                            }else{
+                                // send did not find message
+                                console.log("there was no record with id ");
+                                res.send({success: false, message:"not found"});
+                            }
+                        });
                     }else{
                     db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
-
                         if (err) {
                             console.log("there was a DB error");
                             res.send({success: false, error: err});
                         } else if (document) {
                             db.collection('study').deleteOne(document,function(err,results){
-
                                 if(err){
-                                    //TODO send err messafe
+                                    //send error message
+                                    console.log("there was a DB error");
+                                    res.send({success: false, error: err});
                                 }else if(results){
-
-
-                                    //TODo send success
+                                    console.log("deleted: ",results);
+                                    res.send({success:true,message:results});
+                                    //send success
                                 }else{
-                                    //TODO send did not find message
+                                    // send did not find message
+                                    console.log("there was no record with id ");
+                                    res.send({success: false, message:"not found"});
                                 }
-
                             });
                         }else{
                             console.log("didnt find study groups");
-
                         }
-
-
-
-
                         res.send({success: true,error: err, message: results});
                     });}
                 } else {
@@ -187,7 +198,6 @@ router.post('/EditByID',function(req,res){
             if (err) {
                 console.log("There was an error in the Validation-- EDIT Study Group", err);
                 res.send({result: false, message: err});
-
             } else if (document) {
                 console.log("found the login!: , updating ");
                 //update the document
@@ -200,26 +210,18 @@ router.post('/EditByID',function(req,res){
                     time: req.body.time,
                     members: req.body.members
                 };
-
                 db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
                     if(err){
                         console.log("Error in the update ");
                         res.send({result:false, message : err})
-
                     }else if(record){
                         console.log("edited the record!: ",record);
                         res.send({result:true,message:""});
-
                     } else{
                         console.log("n record with id found: ",req.body._id);
                         res.send({result:false, message: "record not found"});
-
                     }
-
-
                 });
-
-
             } else {
                 res.send({message: "NO LOGIN"});
             }

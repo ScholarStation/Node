@@ -94,7 +94,44 @@ router.post('/', function (req, res, next) {
         });
     });
 });
+router.post('/Create', function (req, res, next) {
+    var createSG = function(){
 
+
+        db.collection('login').insert(
+            {
+                username:req.body.username,
+                password:req.body.password,
+                permissionLevel:req.body.permissionLevel
+            }
+            ,function(err,records){
+                if(err){
+                    console.log("DB ERROR");
+                    res.send({success:false,error:err});
+                }else if(records){
+                    console.log("added login",records);
+                    res.send({success:true,message:records});
+                }else{
+                    console.log("something has gone terribly long");
+                    res.send({success:false,message:"???",error:"???"});
+                }
+
+        });
+    };
+
+
+
+
+
+
+    // creates connection and calls validate login
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        createSG(db, function () {
+            db.close();
+        });
+    });
+});
 //app.post('/', function (req,res,next){
 //    res.json({hello:"world"})
 //});

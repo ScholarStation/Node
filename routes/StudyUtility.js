@@ -149,6 +149,7 @@ router.post('/DeleteByID', function (req, res) {
                             console.log("there was a DB error");
                             res.send({success: false, error: err});
                         } else if (document) {
+                            //todo check for owner
                             db.collection('study').deleteOne(document,function(err,results){
                                 if(err){
                                     //send error message
@@ -167,7 +168,7 @@ router.post('/DeleteByID', function (req, res) {
                         }else{
                             console.log("didnt find study groups");
                         }
-                        res.send({success: true,error: err, message: results});
+                        //res.send({success: true,error: err, message: results});
                     });}
                 } else {
                     res.send({success:false,message: "NO LOGIN"});

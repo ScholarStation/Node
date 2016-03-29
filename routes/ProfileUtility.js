@@ -48,10 +48,49 @@ router.post('/', function (req, res, next) {
 
 
         })
-    }
+    };
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
         requestProfile(db, function () {
+            db.close();
+
+        });
+    });
+});
+
+
+router.post('/Create', function (req, res, next) {
+
+    var createProfile = function(db){
+
+        db.collection('profile').insert(
+            {
+                fname:req.body.fname,
+                lname:req.body.lname,
+                age:req.body.age,
+                gender:req.body.gender,
+                email:req.body.email,
+                year:req.body.year,
+                major:req.body.major,
+                username:req.body.username
+            },
+            function(err,records){
+
+                if(err){
+                    console.log("DB ERROR");
+                    res.send({success:false,error:err});
+                }else if(records){
+                    console.log("added profile",records);
+                    res.send({success:true,message:records});
+                }else{
+                    console.log("something has gone terribly long");
+                    res.send({success:false,message:"???",error:"???"});
+                }
+            });
+    };
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        createProfile(db, function () {
             db.close();
 
         });

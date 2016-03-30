@@ -40,7 +40,7 @@ router.post('/GetList', function(req,res){
 
     var getList = function(db){
         var cursor =db.collection('courseList').find();
-        var courseListArray
+        var courseListArray;
         cursor.each(function(err,doc){
             if(err){
                 console.log("DB ERROR");

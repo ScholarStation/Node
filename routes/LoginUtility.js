@@ -95,7 +95,7 @@ router.post('/', function (req, res, next) {
     });
 });
 router.post('/Create', function (req, res, next) {
-    var createSG = function(){
+    var createSG = function(db){
 
 
         db.collection('login').insert(

@@ -110,7 +110,7 @@ router.post('/Create', function (req, res, next) {
                     res.send({success:false,error:err});
                 }else if(records){
                     console.log("added login",records);
-                    res.send({success:true,message:records});
+                    res.send({success:true,message:records.toString()});
                 }else{
                     console.log("something has gone terribly long");
                     res.send({success:false,message:"???",error:"???"});

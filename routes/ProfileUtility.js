@@ -81,7 +81,7 @@ router.post('/Create', function (req, res, next) {
                     res.send({success:false,error:err});
                 }else if(records){
                     console.log("added profile",records);
-                    res.send({success:true,message:records});
+                    res.send({success:true,message:records.toString()});
                 }else{
                     console.log("something has gone terribly wrong");
                     res.send({success:false,message:"???",error:"???"});

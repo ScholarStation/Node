@@ -83,7 +83,7 @@ router.post('/Create', function (req, res, next) {
                     console.log("added profile",records);
                     res.send({success:true,message:records});
                 }else{
-                    console.log("something has gone terribly long");
+                    console.log("something has gone terribly wrong");
                     res.send({success:false,message:"???",error:"???"});
                 }
             });

@@ -18,7 +18,7 @@ router.post('/Create', function (req, res) {
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- Create Study Group", err);
-                res.send({result: false, message: err});
+                res.send({success: false, message: err});
 
             } else if (document) {
                 console.log("found the login!: ", document);
@@ -39,10 +39,10 @@ router.post('/Create', function (req, res) {
                     //Callback for insert
                     if (err) {
                         console.log("There was an error in the insert-- Create Study Group", err);
-                        res.send({result: false, message: err});
+                        res.send({success: false, message: err.toString()});
                     } else {
                         console.log("Created a new study Group: ", records);
-                        res.send({result: true, message: ""});
+                        res.send({success: true, message: ""});
                     }
 
 
@@ -51,7 +51,7 @@ router.post('/Create', function (req, res) {
 
             } else {
                 console.log("Didnt find a login to make a Study Group! ", req.body);
-                res.send({result: false, message: "invalid Login"});
+                res.send({success: false, message: "invalid Login"});
 
             }
         });
@@ -76,7 +76,7 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- Create Study Group", err);
-                res.send({result: false, message: err});
+                res.send({success: false, message: err});
 
             } else if (document) {
                 console.log("found the login!: , starting to find the study groups", document);
@@ -93,14 +93,14 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
                         studyGroups.push(doc);
                     } else {
                         // send
-                        res.send({studyGroups: studyGroups});
+                        res.send({success:true,studyGroups: studyGroups});
                     }
                 });
 
 
             } else {
                 console.log("Didnt find a login to get studyGroups! ", req.body);
-                res.send({result: false, message: "invalid Login"});
+                res.send({success: false, message: "invalid Login"});
             }
 
         });
@@ -199,7 +199,7 @@ router.post('/EditByID',function(req,res){
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- EDIT Study Group", err);
-                res.send({result: false, message: err});
+                res.send({success: false, message: err});
             } else if (document) {
                 console.log("found the login!: , updating ");
                 //update the document
@@ -227,13 +227,13 @@ router.post('/EditByID',function(req,res){
 
                     if(err){
                         console.log("Error in the update ");
-                        res.send({result:false, message : err})
+                        res.send({success:false, message : err})
                     }else if(record){
                         console.log("edited the record!: ",record);
-                        res.send({result:true,message:""});
+                        res.send({success:true,message:""});
                     } else{
                         console.log("n record with id found: ",req.body._id);
-                        res.send({result:false, message: "record not found"});
+                        res.send({success:false, message: "record not found"});
                     }
                 });
             } else {
@@ -258,7 +258,7 @@ var joinByID = function(db){
     db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
         if (err) {
             console.log("There was an error in the Validation-- EDIT Study Group", err);
-            res.send({result: false, message: err});
+            res.send({success: false, message: err});
         } else if (document) {
             console.log("found the login!: , updating ");
             //update the document
@@ -278,13 +278,13 @@ var joinByID = function(db){
                     db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup, function(err,record){
                         if(err){
                             console.log("Error in the update ");
-                            res.send({result:false, message : err})
+                            res.send({success:false, message : err})
                         }else if(record){
                             console.log("edited the record!: ",record);
-                            res.send({result:true,message:""});
+                            res.send({success:true,message:""});
                         } else{
                             console.log("no record with id found: ",req.body._id);
-                            res.send({result:false, message: "record not found"});
+                            res.send({success:false, message: "record not found"});
                         }
                     });
                 }else{

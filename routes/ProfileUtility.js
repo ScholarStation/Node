@@ -154,7 +154,6 @@ router.post('/EditByID', function (req, res, next) {
 
     };
 
-
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
         editProfile(db, function () {

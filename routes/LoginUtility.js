@@ -120,7 +120,7 @@ router.post('/Create', function (req, res, next) {
                 , function (err, records) {
                     if (err) {
                         console.log("DB ERROR");
-                        res.send({success: false, error: err});
+                        res.send({success: false, error: err.toString()});
                     } else if (records) {
                         console.log("added login", records);
                         res.send({success: true, message: records.toString()});
@@ -141,6 +141,18 @@ router.post('/Create', function (req, res, next) {
             db.close();
         });
     });
+});
+
+
+
+
+router.post('/DateTester', function (req, res, next) {
+    var someDate = new Date(req.body.d);
+    var numberOfDaysToAdd = 10;
+    someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
+    console.log(someDate)
+
+
 });
 //app.post('/', function (req,res,next){
 //    res.json({hello:"world"})

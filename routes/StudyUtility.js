@@ -29,7 +29,8 @@ router.post('/Create', function (req, res) {
                     topic: req.body.topic,
                     date: req.body.date,
                     time: req.body.time,
-                    members: req.body.members
+                    members: req.body.members,
+                    publicView: req.body.publicView
                 };
                 console.log("study group object (starting insert): ", NewStudyGroup);
 
@@ -122,15 +123,56 @@ router.post('/DeleteByID', function (req, res) {
             db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
                 if (err) {
                     console.log("There was an error in the Validation-- Create Study Group", err);
-                    res.send({result: false, message: err});
+                    res.send({success: false, error: err});
 
                 } else if (document) {
                     console.log("found the login!: , deleting ");
-                    db.collection('study').deleteOne({owner:req.body.username,_id: ObjectId(req.body._id)}, function (err, results) {
-                        res.send({err: err, result: results});
-                    });
+                    if(isAdmin(document)){
+                        //delete based on ID
+                        db.collection('study').deleteOne({_id: ObjectId(req.body._id)},function(err,results){
+                            if(err){
+                                //send error message
+                                console.log("there was a DB error");
+                                res.send({success: false, error: err});
+                            }else if(results){
+                                console.log("deleted: ",results);
+                                res.send({success:true,message:results});
+                                //send success
+                            }else{
+                                // send did not find message
+                                console.log("there was no record with id ");
+                                res.send({success: false, message:"not found"});
+                            }
+                        });
+                    }else{
+                    db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
+                        if (err) {
+                            console.log("there was a DB error");
+                            res.send({success: false, error: err});
+                        } else if (document) {
+                            //todo check for owner
+                            db.collection('study').deleteOne(document,function(err,results){
+                                if(err){
+                                    //send error message
+                                    console.log("there was a DB error");
+                                    res.send({success: false, error: err});
+                                }else if(results){
+                                    console.log("deleted: ",results);
+                                    res.send({success:true,message:results});
+                                    //send success
+                                }else{
+                                    // send did not find message
+                                    console.log("there was no record with id ");
+                                    res.send({success: false, message:"not found"});
+                                }
+                            });
+                        }else{
+                            console.log("didnt find study groups");
+                        }
+                        //res.send({success: true,error: err, message: results});
+                    });}
                 } else {
-                    res.send({message: "NO LOGIN"});
+                    res.send({success:false,message: "NO LOGIN"});
                 }
             });
         };
@@ -145,7 +187,7 @@ router.post('/DeleteByID', function (req, res) {
             });
         });
     } else {
-        res.send({message: "Invalid _id" });
+        res.send({success: false,message: "Invalid _id" });
     }
 
 });
@@ -158,7 +200,6 @@ router.post('/EditByID',function(req,res){
             if (err) {
                 console.log("There was an error in the Validation-- EDIT Study Group", err);
                 res.send({result: false, message: err});
-
             } else if (document) {
                 console.log("found the login!: , updating ");
                 //update the document
@@ -169,8 +210,12 @@ router.post('/EditByID',function(req,res){
                     topic: req.body.topic,
                     date: req.body.date,
                     time: req.body.time,
-                    members: req.body.members
+                    members: req.body.members,
+                    publicView: req.body.publicView
                 };
+
+                db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
+
 
                 db.collection('study').update({_id: ObjectId(req.body._id)},{$set:{
                     course: req.body.course,
@@ -180,24 +225,18 @@ router.post('/EditByID',function(req,res){
                     time: req.body.time,
                     members: req.body.members
                 }},function(err,record){
+
                     if(err){
                         console.log("Error in the update ");
                         res.send({result:false, message : err})
-
                     }else if(record){
                         console.log("edited the record!: ",record);
                         res.send({result:true,message:""});
-
                     } else{
                         console.log("n record with id found: ",req.body._id);
                         res.send({result:false, message: "record not found"});
-
                     }
-
-
                 });
-
-
             } else {
                 res.send({message: "NO LOGIN"});
             }
@@ -214,5 +253,78 @@ router.post('/EditByID',function(req,res){
     });
 });
 
+router.post('/JoinByID',function(req,res){
+var joinByID = function(db){
+
+    db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
+        if (err) {
+            console.log("There was an error in the Validation-- EDIT Study Group", err);
+            res.send({result: false, message: err});
+        } else if (document) {
+            console.log("found the login!: , updating ");
+            //update the document
+            var admin = isAdmin(document);
+            db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
+                if (err) {
+                    console.log("there was a DB error");
+                    res.send({success: false, error: err});
+                } else if (document) {
+                    var UpdateStudyGroup = document;
+                    if(admin||document.publicView)
+                        document.members.add(req.body.newUser);
+                    else{
+                        console.log("not public or admin");
+                        res.send({success: false, message: "not admin or public group"});
+                    }
+                    db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup, function(err,record){
+                        if(err){
+                            console.log("Error in the update ");
+                            res.send({result:false, message : err})
+                        }else if(record){
+                            console.log("edited the record!: ",record);
+                            res.send({result:true,message:""});
+                        } else{
+                            console.log("no record with id found: ",req.body._id);
+                            res.send({result:false, message: "record not found"});
+                        }
+                    });
+                }else{
+                    console.log("didnt find study groups");
+                    res.send({success: false, message:"didnt find study groups"});
+                }
+            });
+            //schema
+            //var UpdateStudyGroup =
+            //{
+            //    course: req.body.course,
+            //    owner: req.body.owner,
+            //    topic: req.body.topic,
+            //    date: req.body.date,
+            //    time: req.body.time,
+            //    members: req.body.members
+            //};
+
+        } else {
+            res.send({message: "NO LOGIN"});
+        }
+    });
+};
+
+
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        joinByID(db, function () {
+            db.close();
+
+        });
+    });
+});
+
+
+
+function isAdmin(document){
+    return document.permissionLevel=="ADMIN"
+}
 
 module.exports = router;

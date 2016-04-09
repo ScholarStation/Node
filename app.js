@@ -14,6 +14,7 @@ var profileApp = require('./routes/ProfileUtility');
 var dashBoard = require(('./routes/dashBoard'));
 var errorPage = require(('./routes/error'));
 var studyUtil = require(('./routes/StudyUtility'));
+var courseList = require(('./routes/CourseListUtility'));
 
 
 var app = express();
@@ -39,6 +40,7 @@ app.use('/ProfileUtility', profileApp);
 app.use('/StudyUtility', studyUtil);
 app.use('/dashBoard', dashBoard);
 app.use('/error', errorPage);
+app.use('/CourseList',courseList);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

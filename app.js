@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //defines the site extensions for each route
 app.use('/', routes);
 app.use('/users', users);
-app.use('/LoginApp', loginApp);
+app.use('/LoginUtility', loginApp);
 app.use('/ProfileUtility', profileApp);
 app.use('/StudyUtility', studyUtil);
 app.use('/dashBoard', dashBoard);

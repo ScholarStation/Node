@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var ObjectId = require('mongodb').ObjectID;
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -114,7 +115,7 @@ router.post('/EditByID',  function (req, res, next) {
 
         console.log(req.body._id);
 
-        db.collection('profile').update({_id:req.body._id},{$set:{
+        db.collection('profile').update({_id: ObjectId(req.body._id)},{$set:{
             fname:req.body.fname,
             lname:req.body.lname,
             age:req.body.age,

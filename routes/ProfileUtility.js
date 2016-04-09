@@ -59,6 +59,7 @@ router.post('/', function (req, res, next) {
 });
 
 
+
 router.post('/Create', function (req, res, next) {
 
     var createProfile = function(db){
@@ -97,5 +98,11 @@ router.post('/Create', function (req, res, next) {
     });
 });
 
+
+
+
+router.post('/EditByID',function(req,res,next){
+    //TODO Edit profiles by profileID
+});
 
 module.exports = router;

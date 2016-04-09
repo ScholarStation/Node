@@ -194,7 +194,7 @@ router.post('/DeleteByID', function (req, res) {
 
 router.post('/EditByID',function(req,res){
 
-    var editByID = function(err,db){
+    var editByID = function(db, callback){
       //check login
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
@@ -213,7 +213,19 @@ router.post('/EditByID',function(req,res){
                     members: req.body.members,
                     publicView: req.body.publicView
                 };
+
                 db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
+
+
+                db.collection('study').update({_id: ObjectId(req.body._id)},{$set:{
+                    course: req.body.course,
+                    owner: req.body.owner,
+                    topic: req.body.topic,
+                    date: req.body.date,
+                    time: req.body.time,
+                    members: req.body.members
+                }},function(err,record){
+
                     if(err){
                         console.log("Error in the update ");
                         res.send({result:false, message : err})

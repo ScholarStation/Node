@@ -214,7 +214,6 @@ router.post('/EditByID',function(req,res){
                     publicView: req.body.publicView
                 };
 
-                db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup,function(err,record){
 
 
                 db.collection('study').update({_id: ObjectId(req.body._id)},{$set:{

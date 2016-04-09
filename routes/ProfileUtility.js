@@ -101,8 +101,6 @@ router.post('/Create', function (req, res, next) {
 
 
 
-router.post('/EditByID',function(req,res,next){
-    //TODO Edit profiles by profileID
-});
+
 
 module.exports = router;

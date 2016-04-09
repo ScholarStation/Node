@@ -102,6 +102,18 @@ router.post('/EditByID',  function (req, res, next) {
 
     var editProfile= function(db){
 
+        console.log({
+            fname:req.body.fname,
+            lname:req.body.lname,
+            age:req.body.age,
+            gender:req.body.gender,
+            email:req.body.email,
+            year:req.body.year,
+            major:req.body.major
+        });
+
+        console.log(req.body._id);
+
         db.collection('profile').update({_id:req.body._id},{$set:{
             fname:req.body.fname,
             lname:req.body.lname,

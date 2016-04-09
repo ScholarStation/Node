@@ -41,7 +41,7 @@ router.post('/', function (req, res, next) {
         }, function (err, document) {
             if (err) {//error: something went wroing
                 console.log("Something went wrong...");
-                res.send({success: false,error:"Something went wrong..."});
+                res.send({success: false, error: "Something went wrong..."});
             }
             if (document) {//found the user by their username and password
                 console.log("Found Login... Checking for UK");
@@ -51,7 +51,7 @@ router.post('/', function (req, res, next) {
                 }, function (err, document) {
                     if (err) { // error occurred during read from DB
                         console.log("Error during lookup...");
-                        res.send({success: false,error:"Error during lookup..."});
+                        res.send({success: false, error: "Error during lookup..."});
                         return;
                     }
                     if (document) { // found the user and their unique key. send back valid!
@@ -63,7 +63,11 @@ router.post('/', function (req, res, next) {
                     {
                         console.log("Issuing new key");
                         var KEY = makeid();
-                        var ValidatedLoginUK = {username: req.body.username, KEY: KEY,permissionLevel: permissionLevel};
+                        var ValidatedLoginUK = {
+                            username: req.body.username,
+                            KEY: KEY,
+                            permissionLevel: permissionLevel
+                        };
                         db.collection('uniquekey').insert(ValidatedLoginUK, {w: 1}, function (err, records) {//inserts into the uniquekey collection
                             if (err) {
                                 console.log("could not validatelogin-- insert");
@@ -80,7 +84,7 @@ router.post('/', function (req, res, next) {
             else// Did not find the user. Login failed!! -send back false-
             {
                 console.log("Not a valid user. Login failed!");
-                res.send({validate: false, message:"Not a valid user. Login failed!"});
+                res.send({validate: false, message: "Not a valid user. Login failed!"});
 
             }
 
@@ -95,33 +99,39 @@ router.post('/', function (req, res, next) {
     });
 });
 router.post('/Create', function (req, res, next) {
-    var createSG = function(db){
 
 
-        db.collection('login').insert(
-            {
-                username:req.body.username,
-                password:req.body.password,
-                permissionLevel:req.body.permissionLevel
-            }
-            ,function(err,records){
-                if(err){
-                    console.log("DB ERROR");
-                    res.send({success:false,error:err});
-                }else if(records){
-                    console.log("added login",records);
-                    res.send({success:true,message:records.toString()});
-                }else{
-                    console.log("something has gone terribly long");
-                    res.send({success:false,message:"???",error:"???"});
+    var createSG = function (db) {
+        db.collection('login').findOne({username: req.body.username}, function (err, document) {//finds the user profile
+            if (err) {
+                console.log("could not find login for user");
+                res.send({success: false, error: "could not find login for user"});
+            } else if (document) {
+
+                console.log("Cannot Make a Profile, on e allready exists");
+                res.send({success: false, message: "USER ALREADY EXISTS (login)" + document.toString()})
+
+            } else db.collection('login').insert(
+                {
+                    username: req.body.username,
+                    password: req.body.password,
+                    permissionLevel: req.body.permissionLevel
                 }
+                , function (err, records) {
+                    if (err) {
+                        console.log("DB ERROR");
+                        res.send({success: false, error: err});
+                    } else if (records) {
+                        console.log("added login", records);
+                        res.send({success: true, message: records.toString()});
+                    } else {
+                        console.log("something has gone terribly wong");
+                        res.send({success: false, message: "???", error: "???"});
+                    }
 
+                });
         });
     };
-
-
-
-
 
 
     // creates connection and calls validate login

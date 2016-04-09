@@ -102,7 +102,7 @@ router.post('/EditByID',  function (req, res, next) {
 
     var editProfile= function(db){
 
-        db.collection('profile').update({_id: ObjectId(req.body._id)},{$set:{
+        db.collection('profile').update({_id:req.body._id},{$set:{
             fname:req.body.fname,
             lname:req.body.lname,
             age:req.body.age,

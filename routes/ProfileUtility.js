@@ -98,6 +98,47 @@ router.post('/Create', function (req, res, next) {
     });
 });
 
+router.post('/EditByID',  function (req, res, next) {
+
+    var editProfile= function(db){
+
+        db.collection('profile').update({_id: ObjectId(req.body._id)},{$set:{
+            fname:req.body.fname,
+            lname:req.body.lname,
+            age:req.body.age,
+            gender:req.body.gender,
+            email:req.body.email,
+            year:req.body.year,
+            major:req.body.major
+        }},function(err,record){
+            if(err){
+                console.log("Error in the update ");
+                res.send({success:false, message : err})
+            }else if(record){
+                console.log("edited the record!: ",record);
+                res.send({success:true,message:record.toString()});
+            } else{
+                console.log("n record with id found: ",req.body._id);
+                res.send({success:false, message: "record not found"+record.toString()});
+            }
+        });
+
+
+    };
+
+
+
+
+
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        editProfile(db, function () {
+            db.close();
+
+        });
+    });
+});
 
 
 

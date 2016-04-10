@@ -133,10 +133,10 @@ router.post('/DeleteByID', function (req, res) {
                             if(err){
                                 //send error message
                                 console.log("there was a DB error");
-                                res.send({success: false, error: err});
+                                res.send({success: false, error: err.toString()});
                             }else if(results){
                                 console.log("deleted: ",results);
-                                res.send({success:true,message:results});
+                                res.send({success:true,message:results.toString()});
                                 //send success
                             }else{
                                 // send did not find message
@@ -155,10 +155,10 @@ router.post('/DeleteByID', function (req, res) {
                                 if(err){
                                     //send error message
                                     console.log("there was a DB error");
-                                    res.send({success: false, error: err});
+                                    res.send({success: false, error: err.toString()});
                                 }else if(results){
                                     console.log("deleted: ",results);
-                                    res.send({success:true,message:results});
+                                    res.send({success:true,message:results.toString()});
                                     //send success
                                 }else{
                                     // send did not find message

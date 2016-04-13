@@ -17,10 +17,10 @@ router.post('/Create',function(req,res){
            db.collection('courseList').insert({courseName:course},function(err,records){
                if(err){
                    console.log("DB ERROR");
-                   res.send({success:false,error:err});
+                   res.send({success:false,error:err.toString()});
                }else if(records){
                    console.log("added course",records);
-                   res.send({success:true,message:records});
+                   res.send({success:true,message:records.toString()});
                }else{
                    console.log("something has gone terribly long");
                    res.send({success:false,message:"???",error:"???"});

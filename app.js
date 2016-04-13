@@ -15,6 +15,7 @@ var dashBoard = require(('./routes/dashBoard'));
 var errorPage = require(('./routes/error'));
 var studyUtil = require(('./routes/StudyUtility'));
 var courseList = require(('./routes/CourseListUtility'));
+var feedback = require(('./routes/FeedBackUtility'));
 
 
 var app = express();
@@ -41,6 +42,7 @@ app.use('/StudyUtility', studyUtil);
 app.use('/dashBoard', dashBoard);
 app.use('/error', errorPage);
 app.use('/CourseList',courseList);
+app.use('FeedBackUtility',feedback);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

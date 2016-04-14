@@ -105,7 +105,7 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
 
         });
 
-    }
+    };
     console.log("made it to get groups1!");
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
@@ -320,7 +320,76 @@ var joinByID = function(db){
     });
 });
 
+router.post('/Search',function(req,res){
+    //TODO add specific queries
+    var searchSG = function(db){
+        const COURSE_FILTER =0;
+        const TOPIC_FILTER =1;
+        const MEMBER_FILTER = 2;
 
+        var filter = req.body.filter;
+        var SGreturnArray= [];
+
+        if (filter == COURSE_FILTER){
+          var cursor=  db.collection('study').find({course:req.body.query});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.add(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }else if (filter == TOPIC_FILTER){
+            var cursor=  db.collection('study').find({topic:req.body.query});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.add(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }else if (filter == MEMBER_FILTER){
+            var cursor=  db.collection('study').find({$or: [{owner: req.body.query}, {members: req.body.query}]});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.add(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }
+    };
+
+
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        searchSG(db, function () {
+            db.close();
+        });
+    });
+});
 
 function isAdmin(document){
     return document.permissionLevel=="ADMIN"

@@ -42,7 +42,7 @@ app.use('/StudyUtility', studyUtil);
 app.use('/dashBoard', dashBoard);
 app.use('/error', errorPage);
 app.use('/CourseList',courseList);
-app.use('FeedBackUtility',feedback);
+app.use('/FeedBackUtility',feedback);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

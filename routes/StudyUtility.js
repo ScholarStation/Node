@@ -338,7 +338,7 @@ router.post('/Search',function(req,res){
                     //if there is something in the array, and it is public, add it to the return array
                     console.dir(doc);
                     if(doc.publicView){
-                        SGreturnArray.add(doc);
+                        SGreturnArray.push(doc);
                     }
                 } else {
                     //send the array
@@ -354,7 +354,7 @@ router.post('/Search',function(req,res){
                     //if there is something in the array, and it is public, add it to the return array
                     console.dir(doc);
                     if(doc.publicView){
-                        SGreturnArray.add(doc);
+                        SGreturnArray.push(doc);
                     }
                 } else {
                     //send the array
@@ -370,7 +370,7 @@ router.post('/Search',function(req,res){
                     //if there is something in the array, and it is public, add it to the return array
                     console.dir(doc);
                     if(doc.publicView){
-                        SGreturnArray.add(doc);
+                        SGreturnArray.push(doc);
                     }
                 } else {
                     //send the array

@@ -347,7 +347,7 @@ router.post('/Search',function(req,res){
             });
 
         }else if (filter == TOPIC_FILTER){
-            var cursor=  db.collection('study').find({topic:req.body.topic});// put query here
+            var cursor=  db.collection('study').find({topic:req.body.query});// put query here
             cursor.each(function(err, doc) {
                 assert.equal(err, null);
                 if (doc != null) {
@@ -363,7 +363,7 @@ router.post('/Search',function(req,res){
             });
 
         }else if (filter == MEMBER_FILTER){
-            var cursor=  db.collection('study').find({$or: [{owner: req.body.username}, {members: req.body.username}]});// put query here
+            var cursor=  db.collection('study').find({$or: [{owner: req.body.query}, {members: req.body.query}]});// put query here
             cursor.each(function(err, doc) {
                 assert.equal(err, null);
                 if (doc != null) {

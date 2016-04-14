@@ -56,7 +56,23 @@ router.post('/', function (req, res, next) {
                     }
                     if (document) { // found the user and their unique key. send back valid!
                         console.log("Found user and their key...", document);
-                        res.send({success: true, username: document.username, KEY: document.KEY});
+                        //find reminders
+                        var cursor =db.collection('reminder').find({username:document.username});
+                        var reminders =[];
+
+                        cursor.each(function (err, doc) {
+                            assert.equal(err, null);
+                            if (doc != null) {
+                                //create an aray of all of the reminders
+                                console.log("found reminder!: ", doc);
+                                reminders.push(doc);
+                            } else {
+                                //send
+                                res.send({success: true, username: document.username, KEY: document.KEY,reminders:reminders});
+                            }
+                        });
+
+
 
                     }
                     else // found user, but they don't have a key...
@@ -76,8 +92,21 @@ router.post('/', function (req, res, next) {
                                 console.log("Record added ", records);
                         });
                         console.log("sending reponse");
-                        res.send({success: true, username: req.body.username, KEY: KEY});
+                        //find reminders
+                        var cursor =db.collection('reminder').find({username:document.username});
+                        var reminders =[];
 
+                        cursor.each(function (err, doc) {
+                            assert.equal(err, null);
+                            if (doc != null) {
+                                //create an aray of all of the reminders
+                                console.log("found reminder!: ", doc);
+                                reminders.push(doc);
+                            } else {
+                                //send
+                                res.send({success: true, username: document.username, KEY: document.KEY,reminders:reminders});
+                            }
+                        });
                     }
                 });
             }

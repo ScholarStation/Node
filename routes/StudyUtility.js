@@ -42,17 +42,16 @@ router.post('/Create', function (req, res) {
                         res.send({success: false, message: err.toString()});
                     } else {
                         console.log("Created a new study Group: ", records);
+                        db.collection('reminder').insert({course:records.course,username:records.owner,date:records.date});
+                        records.members.forEach(function(member){
+                            db.collection('reminder').insert({course:records.course,username:member,date:records.date});
+                        });
                         res.send({success: true, message: ""});
                     }
-
-
                 });
-
-
             } else {
                 console.log("Didnt find a login to make a Study Group! ", req.body);
                 res.send({success: false, message: "invalid Login"});
-
             }
         });
 

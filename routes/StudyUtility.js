@@ -42,7 +42,8 @@ router.post('/Create', function (req, res) {
                         res.send({success: false, message: err.toString()});
                     } else {
                         console.log("Created a new study Group: ", records);
-                        db.collection('reminder').insert({course:records.course,username:records.owner,date:records.date});
+                        var newDate = new Date(records.date+" "+records.time);
+                        db.collection('reminder').insert({course:records.course,username:records.owner,date:newDate});
                         records.members.forEach(function(member){
                             db.collection('reminder').insert({course:records.course,username:member,date:records.date});
                         });

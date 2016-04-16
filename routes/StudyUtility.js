@@ -271,7 +271,7 @@ var joinByID = function(db){
                 } else if (document) {
                     var UpdateStudyGroup = document;
                     if(admin||document.publicView)
-                        document.members.add(req.body.newUser);
+                        document.members.push(req.body.newUser);
                     else{
                         console.log("not public or admin");
                         res.send({success: false, message: "not admin or public group"});

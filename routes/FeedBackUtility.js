@@ -72,4 +72,25 @@ router.post('/DeleteByID', function (req, res) {
         });
     });
 });
+
+
+router.post('/GetReminders',function(req,res){
+    var reminders=[];
+    var cursor =db.collection('reminder').find({username:req.body.username});
+    cursor.each(function (err, doc) {
+        assert.equal(err, null);
+        if (doc != null) {
+            //create an aray of all of the study groups
+            console.log("REMMINDER!: ", doc);
+           reminders.push(doc);
+        } else {
+            // send
+            res.send({success:true,reminders: reminders});
+        }
+    });
+
+
+
+});
+
 module.exports = router;

@@ -242,13 +242,10 @@ router.post('/EditByID',function(req,res){
             }
         });
     };
-
-
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
         editByID(db, function () {
             db.close();
-
         });
     });
 });

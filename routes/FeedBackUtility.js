@@ -44,4 +44,32 @@ router.post('/Create', function (req, res) {
         });
     });
 });
+
+router.post('/DeleteByID', function (req, res) {
+
+
+    var deleteReminder = function(db){
+        db.collection('reminder').deleteOne({_id: ObjectId(req.body._id)},function(err,results){
+            if(err){
+                //send error message
+                console.log("there was a DB error");
+                res.send({success: false, error: err.toString()});
+            }else if(results){
+                console.log("deleted: ",results);
+                res.send({success:true,message:results.toString()});
+                //send success
+            }else{
+                // send did not find message
+                console.log("there was no record with id ");
+                res.send({success: false, message:"not found"});
+            }
+        });
+    };
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        deleteReminder(db, function () {
+            db.close();
+        });
+    });
+});
 module.exports = router;

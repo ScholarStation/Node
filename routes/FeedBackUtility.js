@@ -75,21 +75,28 @@ router.post('/DeleteByID', function (req, res) {
 
 
 router.post('/GetReminders',function(req,res){
-    var reminders=[];
-    var cursor =db.collection('reminder').find({username:req.body.username});
-    cursor.each(function (err, doc) {
-        assert.equal(err, null);
-        if (doc != null) {
-            //create an aray of all of the study groups
-            console.log("REMMINDER!: ", doc);
-           reminders.push(doc);
-        } else {
-            // send
-            res.send({success:true,reminders: reminders});
-        }
+
+    var getReminders = function(db) {
+        var reminders = [];
+        var cursor = db.collection('reminder').find({username: req.body.username});
+        cursor.each(function (err, doc) {
+            assert.equal(err, null);
+            if (doc != null) {
+                //create an aray of all of the study groups
+                console.log("REMMINDER!: ", doc);
+                reminders.push(doc);
+            } else {
+                // send
+                res.send({success: true, reminders: reminders});
+            }
+        });
+    }
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        getReminders(db, function () {
+            db.close();
+        });
     });
-
-
 
 });
 

@@ -3,8 +3,10 @@
  */
 $(document).ready(function() {
     var url = "http://localhost:3000/ProfileUtility"; //where the post is made to. will need to be changed to antilizard.com:3000 when moved to server.
-    var usr = 'qwex';
-    var key = '41o89MLJ7VCm33GXGttVhCziIfiS0d';
+   // var usr = 'qwex';
+    //var key = '41o89MLJ7VCm33GXGttVhCziIfiS0d';
+    var usr = localStorage.getItem('username');
+    var key = localStorage.getItem('key')
     var userData;
     $.ajax({
         type: "POST",
@@ -12,6 +14,7 @@ $(document).ready(function() {
         dataType: 'json',
         data: {username: usr, KEY: key},
         success: function(result) {
+            //alert("the username is: " + usr + " || and the key is: "+ key +" YOUR FIRST NAME IS - "+ result.fname);
             // fill the fields on the page with information from the returned document
             $("#first_name_output").val(result.fname);
             $("#last_name_output").val(result.lname);

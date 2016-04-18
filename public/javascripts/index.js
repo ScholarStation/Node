@@ -82,7 +82,7 @@ $(document).ready(function() {
  *
  */
 $(document).on("click", ".login__submit", function(e) {
-            var url = "http://localhost:3000/LoginApp"; //where the post is made to. will need to be changed to antilizard.com:3000 when moved to server.
+            var url = "http://localhost:3000/LoginUtility"; //where the post is made to. will need to be changed to antilizard.com:3000 when moved to server.
             var usr = document.getElementById('inputUsername').value;
             var pass = document.getElementById('inputPassword').value;
             var userData;
@@ -92,8 +92,11 @@ $(document).on("click", ".login__submit", function(e) {
                     dataType: 'json',
                     data: {username: usr, password: pass},
                     success: function(result) {
-                        if(result.validate == true){
+                        if(result.success == true){
                             // need to set up the session cookie here.
+                           //alert("key is :" + result.KEY);
+                            localStorage.setItem('username', result.username);
+                            localStorage.setItem('key', result.KEY);
                             // for now we'll hardcode the request in the next page.
                             window.location="http://localhost:3000/dashboard";
                         }

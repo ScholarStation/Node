@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var ObjectId = require('mongodb').ObjectID;
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -48,7 +49,7 @@ router.post('/', function (req, res, next) {
 
 
         })
-    }
+    };
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
         requestProfile(db, function () {
@@ -59,8 +60,108 @@ router.post('/', function (req, res, next) {
 });
 
 
+router.post('/Create', function (req, res, next) {
 
-router.post('/EditByID',function(req,res,next){
-    //TODO Edit profiles by profileID
+    var createProfile = function (db) {
+
+        // check for unique
+        db.collection('profile').findOne({username: req.body.username}, function (err, document) {//finds the user profile
+            if (err) {
+                console.log("could not find profile for user");
+                res.send({error: "could not find profile for user"});
+            } else if (document) {
+
+                console.log("Cannot Make a Profile, on e allready exists");
+                res.send({success: false, message: "USER ALREADY EXISTS " + document.toString()})
+
+            } else
+                db.collection('profile').insert(
+                    {
+                        fname: req.body.fname,
+                        lname: req.body.lname,
+                        age: req.body.age,
+                        gender: req.body.gender,
+                        email: req.body.email,
+                        year: req.body.year,
+                        major: req.body.major,
+                        username: req.body.username
+                    },
+                    function (err, records) {
+
+                        if (err) {
+                            console.log("DB ERROR");
+                            res.send({success: false, error: err});
+                        } else if (records) {
+                            console.log("added profile", records);
+                            res.send({success: true, message: records.toString()});
+                        } else {
+                            console.log("something has gone terribly wrong");
+                            res.send({success: false, message: "???", error: "???"});
+                        }
+                    });
+
+
+        });
+    }
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        createProfile(db, function () {
+            db.close();
+
+        });
+    });
 });
+
+router.post('/EditByID', function (req, res, next) {
+
+    var editProfile = function (db) {
+
+        console.log({
+            fname: req.body.fname,
+            lname: req.body.lname,
+            age: req.body.age,
+            gender: req.body.gender,
+            email: req.body.email,
+            year: req.body.year,
+            major: req.body.major
+        });
+
+        console.log(req.body._id);
+
+        db.collection('profile').update({_id: ObjectId(req.body._id)}, {
+            $set: {
+                fname: req.body.fname,
+                lname: req.body.lname,
+                age: req.body.age,
+                gender: req.body.gender,
+                email: req.body.email,
+                year: req.body.year,
+                major: req.body.major
+            }
+        }, function (err, record) {
+            if (err) {
+                console.log("Error in the update ");
+                res.send({success: false, message: err})
+            } else if (record) {
+                console.log("edited the record!: ", record);
+                res.send({success: true, message: record.toString()});
+            } else {
+                console.log("n record with id found: ", req.body._id);
+                res.send({success: false, message: "record not found" + record.toString()});
+            }
+        });
+
+
+    };
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        editProfile(db, function () {
+            db.close();
+
+        });
+    });
+});
+
+
 module.exports = router;

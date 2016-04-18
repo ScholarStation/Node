@@ -18,7 +18,7 @@ router.post('/Create', function (req, res) {
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- Create Study Group", err);
-                res.send({result: false, message: err});
+                res.send({success: false, message: err});
 
             } else if (document) {
                 console.log("found the login!: ", document);
@@ -29,7 +29,8 @@ router.post('/Create', function (req, res) {
                     topic: req.body.topic,
                     date: req.body.date,
                     time: req.body.time,
-                    members: req.body.members
+                    members: req.body.members,
+                    publicView: req.body.publicView
                 };
                 console.log("study group object (starting insert): ", NewStudyGroup);
 
@@ -38,20 +39,21 @@ router.post('/Create', function (req, res) {
                     //Callback for insert
                     if (err) {
                         console.log("There was an error in the insert-- Create Study Group", err);
-                        res.send({result: false, message: err});
+                        res.send({success: false, message: err.toString()});
                     } else {
                         console.log("Created a new study Group: ", records);
-                        res.send({result: true, message: ""});
+                        var newDate = new Date(NewStudyGroup.date+" "+NewStudyGroup.time);
+                        db.collection('reminder').insert({course:NewStudyGroup.course,username:NewStudyGroup.owner,date:newDate});
+                        if(NewStudyGroup.members)
+                            NewStudyGroup.members.forEach(function(member){
+                                db.collection('reminder').insert({course:NewStudyGroup.course,username:member,date:NewStudyGroup.date});
+                            });
+                        res.send({success: true, message: ""});
                     }
-
-
                 });
-
-
             } else {
                 console.log("Didnt find a login to make a Study Group! ", req.body);
-                res.send({result: false, message: "invalid Login"});
-
+                res.send({success: false, message: "invalid Login"});
             }
         });
 
@@ -75,7 +77,7 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- Create Study Group", err);
-                res.send({result: false, message: err});
+                res.send({success: false, message: err});
 
             } else if (document) {
                 console.log("found the login!: , starting to find the study groups", document);
@@ -92,19 +94,19 @@ router.post('/GetStudyGroupsByMember', function (req, res) {
                         studyGroups.push(doc);
                     } else {
                         // send
-                        res.send({studyGroups: studyGroups});
+                        res.send({success:true,studyGroups: studyGroups});
                     }
                 });
 
 
             } else {
                 console.log("Didnt find a login to get studyGroups! ", req.body);
-                res.send({result: false, message: "invalid Login"});
+                res.send({success: false, message: "invalid Login"});
             }
 
         });
 
-    }
+    };
     console.log("made it to get groups1!");
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
@@ -119,21 +121,62 @@ router.post('/DeleteByID', function (req, res) {
 
     var deleteItem = function (db, callback) {
 
-            db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
-                if (err) {
-                    console.log("There was an error in the Validation-- Create Study Group", err);
-                    res.send({result: false, message: err});
+        db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
+            if (err) {
+                console.log("There was an error in the Validation-- Create Study Group", err);
+                res.send({success: false, error: err});
 
-                } else if (document) {
-                    console.log("found the login!: , deleting ");
-                    db.collection('study').deleteOne({owner:req.body.username,_id: ObjectId(req.body._id)}, function (err, results) {
-                        res.send({err: err, result: results});
+            } else if (document) {
+                console.log("found the login!: , deleting ");
+                if(isAdmin(document)){
+                    //delete based on ID
+                    db.collection('study').deleteOne({_id: ObjectId(req.body._id)},function(err,results){
+                        if(err){
+                            //send error message
+                            console.log("there was a DB error");
+                            res.send({success: false, error: err.toString()});
+                        }else if(results){
+                            console.log("deleted: ",results);
+                            res.send({success:true,message:results.toString()});
+                            //send success
+                        }else{
+                            // send did not find message
+                            console.log("there was no record with id ");
+                            res.send({success: false, message:"not found"});
+                        }
                     });
-                } else {
-                    res.send({message: "NO LOGIN"});
-                }
-            });
-        };
+                }else{
+                    db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
+                        if (err) {
+                            console.log("there was a DB error");
+                            res.send({success: false, error: err});
+                        } else if (document) {
+                            //todo check for owner
+                            db.collection('study').deleteOne(document,function(err,results){
+                                if(err){
+                                    //send error message
+                                    console.log("there was a DB error");
+                                    res.send({success: false, error: err.toString()});
+                                }else if(results){
+                                    console.log("deleted: ",results);
+                                    res.send({success:true,message:results.toString()});
+                                    //send success
+                                }else{
+                                    // send did not find message
+                                    console.log("there was no record with id ");
+                                    res.send({success: false, message:"not found"});
+                                }
+                            });
+                        }else{
+                            console.log("didnt find study groups");
+                        }
+                        //res.send({success: true,error: err, message: results});
+                    });}
+            } else {
+                res.send({success:false,message: "NO LOGIN"});
+            }
+        });
+    };
 
 //only do it if a valid key (24 char)
     if (req.body._id.length == 24) {
@@ -145,7 +188,7 @@ router.post('/DeleteByID', function (req, res) {
             });
         });
     } else {
-        res.send({message: "Invalid _id" });
+        res.send({success: false,message: "Invalid _id" });
     }
 
 });
@@ -153,12 +196,11 @@ router.post('/DeleteByID', function (req, res) {
 router.post('/EditByID',function(req,res){
 
     var editByID = function(db, callback){
-      //check login
+        //check login
         db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
             if (err) {
                 console.log("There was an error in the Validation-- EDIT Study Group", err);
-                res.send({result: false, message: err});
-
+                res.send({success: false, message: err});
             } else if (document) {
                 console.log("found the login!: , updating ");
                 //update the document
@@ -169,8 +211,11 @@ router.post('/EditByID',function(req,res){
                     topic: req.body.topic,
                     date: req.body.date,
                     time: req.body.time,
-                    members: req.body.members
+                    members: req.body.members,
+                    publicView: req.body.publicView
                 };
+
+
 
                 db.collection('study').update({_id: ObjectId(req.body._id)},{$set:{
                     course: req.body.course,
@@ -180,23 +225,81 @@ router.post('/EditByID',function(req,res){
                     time: req.body.time,
                     members: req.body.members
                 }},function(err,record){
+
                     if(err){
                         console.log("Error in the update ");
-                        res.send({result:false, message : err})
-
+                        res.send({success:false, message : err})
                     }else if(record){
                         console.log("edited the record!: ",record);
-                        res.send({result:true,message:""});
-
+                        res.send({success:true,message:""});
                     } else{
                         console.log("n record with id found: ",req.body._id);
-                        res.send({result:false, message: "record not found"});
-
+                        res.send({success:false, message: "record not found"});
                     }
-
-
                 });
+            } else {
+                res.send({message: "NO LOGIN"});
+            }
+        });
+    };
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        editByID(db, function () {
+            db.close();
+        });
+    });
+});
 
+router.post('/JoinByID',function(req,res){
+    var joinByID = function(db){
+
+        db.collection('uniquekey').findOne({username: req.body.username, KEY: req.body.KEY}, function (err, document) {
+            if (err) {
+                console.log("There was an error in the Validation-- EDIT Study Group", err);
+                res.send({success: false, message: err});
+            } else if (document) {
+                console.log("found the login!: , updating ");
+                //update the document
+                var admin = isAdmin(document);
+                db.collection('study').findOne({_id: ObjectId(req.body._id)}, function (err, document) {
+                    if (err) {
+                        console.log("there was a DB error");
+                        res.send({success: false, error: err});
+                    } else if (document) {
+                        var UpdateStudyGroup = document;
+                        if(admin||document.publicView)
+                            document.members.push(req.body.newMember);
+                        else{
+                            console.log("not public or admin");
+                            res.send({success: false, message: "not admin or public group"});
+                        }
+                        db.collection('study').update({_id:ObjectId(req.body._id)},UpdateStudyGroup, function(err,record){
+                            if(err){
+                                console.log("Error in the update ");
+                                res.send({success:false, message : err})
+                            }else if(record){
+                                console.log("edited the record!: ",record);
+                                res.send({success:true,message:""});
+                            } else{
+                                console.log("no record with id found: ",req.body._id);
+                                res.send({success:false, message: "record not found"});
+                            }
+                        });
+                    }else{
+                        console.log("didnt find study groups");
+                        res.send({success: false, message:"didnt find study groups"});
+                    }
+                });
+                //schema
+                //var UpdateStudyGroup =
+                //{
+                //    course: req.body.course,
+                //    owner: req.body.owner,
+                //    topic: req.body.topic,
+                //    date: req.body.date,
+                //    time: req.body.time,
+                //    members: req.body.members
+                //};
 
             } else {
                 res.send({message: "NO LOGIN"});
@@ -205,14 +308,89 @@ router.post('/EditByID',function(req,res){
     };
 
 
+
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
-        editByID(db, function () {
+        joinByID(db, function () {
             db.close();
 
         });
     });
 });
 
+router.post('/Search',function(req,res){
+    //TODO add specific queries
+    var searchSG = function(db){
+        const COURSE_FILTER =0;
+        const TOPIC_FILTER =1;
+        const MEMBER_FILTER = 2;
+
+        var filter = req.body.filter;
+        var SGreturnArray= [];
+
+        if (filter == COURSE_FILTER){
+            var cursor=  db.collection('study').find({course:req.body.query});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.push(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }else if (filter == TOPIC_FILTER){
+            var cursor=  db.collection('study').find({topic:req.body.query});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.push(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }else if (filter == MEMBER_FILTER){
+            var cursor=  db.collection('study').find({$or: [{owner: req.body.query}, {members: req.body.query}]});// put query here
+            cursor.each(function(err, doc) {
+                assert.equal(err, null);
+                if (doc != null) {
+                    //if there is something in the array, and it is public, add it to the return array
+                    console.dir(doc);
+                    if(doc.publicView){
+                        SGreturnArray.push(doc);
+                    }
+                } else {
+                    //send the array
+                    res.send({studyGroups:SGreturnArray});
+                }
+            });
+
+        }
+    };
+
+
+
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        searchSG(db, function () {
+            db.close();
+        });
+    });
+});
+
+function isAdmin(document){
+    return document.permissionLevel=="ADMIN"
+}
 
 module.exports = router;

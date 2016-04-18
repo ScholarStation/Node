@@ -7,6 +7,7 @@ var path = require('path');
 
 router.get('/', function (req, res, next) {
     //Only send back if you can validate the user is logged in with the right key and all that.
-    res.sendFile(path.resolve('./views/dashBoard.html'));
+   res.sendFile(path.resolve('./views/dashBoard.html'));
+   // res.render('index', { title: 'DashBoard' });
 });
 module.exports = router;

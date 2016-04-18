@@ -46,7 +46,7 @@ router.post('/Create', function (req, res) {
                         db.collection('reminder').insert({course:NewStudyGroup.course,username:NewStudyGroup.owner,date:newDate});
                        if(NewStudyGroup.members)
                            NewStudyGroup.members.forEach(function(member){
-                            db.collection('reminder').insert({course:NewStudyGroup.course,username:member,date:NewStudyGroup.date});
+                            db.collection('reminder').insert({course:NewStudyGroup.course,username:member,date:newDate});
                         });
                         res.send({success: true, message: ""});
                     }

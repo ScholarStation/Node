@@ -93,7 +93,7 @@ router.post('/', function (req, res, next) {
                         });
                         console.log("sending reponse");
                         //find reminders
-                        var cursor =db.collection('reminder').find({username:document.username});
+                        var cursor =db.collection('reminder').find({username:req.body.username});
                         var reminders =[];
 
                         cursor.each(function (err, doc) {
@@ -104,7 +104,7 @@ router.post('/', function (req, res, next) {
                                 reminders.push(doc);
                             } else {
                                 //send
-                                res.send({success: true, username: document.username, KEY: document.KEY,reminders:reminders});
+                                res.send({success: true, username: req.body.username, KEY: KEY,reminders:reminders});
                             }
                         });
                     }
